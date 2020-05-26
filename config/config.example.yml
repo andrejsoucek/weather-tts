@@ -1,0 +1,25 @@
+gpio:
+  pin: 4
+google:
+  auth:
+    path: '/home/user/auth.json'
+realtime:
+  url: 'http://my.meteo/realtime.txt'
+message:
+  template: 'Milovice rádio dobrý den. Čas <#TIME>. Vítr <#WIND>. Dráha v používání <#RWY>. Okruhy <#CIRCUIT>. Teplota <#TEMP>. Základna oblačnosti <#CLOUDBASE>. QNH <#QNH>.'
+  timezoneOffset: '+2'
+  wind:
+    calm: 'klid'
+    speedUnits: 'uzlů'
+    bearingUnits: 'stupňů'
+    gust: 'nárazy'
+  rwy:
+    27: '> 180'
+    09: '<= 180'
+  circuits:
+    levé: '> 180'
+    pravé: '<= 180'
+  temperature:
+    units: 'stupňů'
+  cloudbase:
+    units: 'stop'

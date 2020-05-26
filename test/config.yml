@@ -1,0 +1,18 @@
+message:
+  template: 'Milovice Rádio dobrý den. Čas <#TIME>. Vítr <#WIND>. Dráha v používání <#RWY>. Okruhy <#CIRCUIT>. Teplota <#TEMP>. Základna oblačnosti <#CLOUDBASE>. QNH <#QNH>.'
+  timezoneOffset: '+2'
+  wind:
+    calm: 'klid'
+    speedUnits: 'uzlů'
+    bearingUnits: 'stupňů'
+    gust: 'Nárazy'
+  rwy:
+    27: '> 180'
+    09: '<= 180'
+  circuits:
+    levé: '> 180'
+    pravé: '<= 180'
+  temperature:
+    units: 'stupňů'
+  cloudbase:
+    units: 'stop'
