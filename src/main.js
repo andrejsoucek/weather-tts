@@ -64,11 +64,11 @@ function _fetch(cfg) {
 function _synthesizeAndPlay(response, cfg) {
   const weather = realtime.parse(response.data);
   const msg = message.createFrom(weather, cfg.message);
-  const path = '/home/andrej/Plocha/output.mp3';
-  tts.synthesize(msg, path, cfg.google.tts.language)
+  const output = path.join(__dirname, '../output.mp3');
+  tts.synthesize(msg, output, cfg.google.tts.language)
       .then(() => {
         console.log('Audio content written to file: output.mp3');
-        player.play(path, (err) => {
+        player.play(output, (err) => {
           if (err) {
             console.log(err);
           }
