@@ -8,12 +8,13 @@ const client = new TTS.TextToSpeechClient();
  *
  * @param {string} text
  * @param {string} outputPath
+ * @param {string} language
  * @return {Promise<void>}
  */
-async function synthesize(text, outputPath) {
+async function synthesize(text, outputPath, language) {
   const request = {
     input: {text: text},
-    voice: {languageCode: 'cs-CZ'},
+    voice: {languageCode: language},
     audioConfig: {audioEncoding: 'MP3'},
   };
 

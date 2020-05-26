@@ -28,7 +28,7 @@ function run(cfg) {
       _fetch(cfg);
     });
   } else {
-    console.log('GPIO not available. Press any key to pull the trigger.');
+    console.log('GPIO not available. Press enter to pull the trigger.');
     process.stdin.on( 'data', () => {
       _fetch(cfg);
     });
@@ -47,7 +47,7 @@ function _fetch(cfg) {
   working = true;
   axios.get(cfg.realtime.url)
       .then((response) => {
-        _synthesizeAndPlay(response, cfg.message);
+        _synthesizeAndPlay(response, cfg);
       })
       .catch((err) => {
         console.log(err);
@@ -63,9 +63,9 @@ function _fetch(cfg) {
  */
 function _synthesizeAndPlay(response, cfg) {
   const weather = realtime.parse(response.data);
-  const msg = message.createFrom(weather, cfg);
+  const msg = message.createFrom(weather, cfg.message);
   const path = '/home/andrej/Plocha/output.mp3';
-  tts.synthesize(msg, path)
+  tts.synthesize(msg, path, cfg.google.tts.language)
       .then(() => {
         console.log('Audio content written to file: output.mp3');
         player.play(path, (err) => {

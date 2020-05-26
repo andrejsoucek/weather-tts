@@ -1,25 +1,27 @@
 gpio:
-  pin: 4
+  pin: 4 # pin number to trigger the tts
 google:
   auth:
-    path: '/home/user/auth.json'
+    path: '/home/user/auth.json' # path to the auth key
+  tts:
+    language: 'cs-CZ' # language code https://cloud.google.com/text-to-speech/docs/voices
 realtime:
-  url: 'http://my.meteo/realtime.txt'
+  url: 'http://my.meteo/realtime.txt' # URL to get the weather from
 message:
   template: 'Milovice rádio dobrý den. Čas <#TIME>. Vítr <#WIND>. Dráha v používání <#RWY>. Okruhy <#CIRCUIT>. Teplota <#TEMP>. Základna oblačnosti <#CLOUDBASE>. QNH <#QNH>.'
-  timezoneOffset: '+2'
+  timezoneOffset: '+2' # means the time from realtime.txt is UTC+2 (2 hours will be subtracted to get the UTC time)
   wind:
-    calm: 'klid'
-    speedUnits: 'uzlů'
-    bearingUnits: 'stupňů'
-    gust: 'nárazy'
+    calm: 'klid' # Wind calm.
+    speedUnits: 'uzlů' # Wind speed units
+    bearingUnits: 'stupňů' # Wind bearing units
+    gust: 'nárazy' # Wind gusts
   rwy:
-    27: '> 180'
-    09: '<= 180'
+    27: '> 180' # Runway 27 will be set if the wind bearing is > 180
+    09: '<= 180' # Runway 09 will be set if the wind bearing is <= 180
   circuits:
-    levé: '> 180'
-    pravé: '<= 180'
+    levé: '> 180' # levé circuits will be set if the wind bearing is > 180
+    pravé: '<= 180' # pravé circuits will be set if the wind bearing is <= 180
   temperature:
-    units: 'stupňů'
+    units: 'stupňů' # temperature units (degrees, not Celsius or Fahrenheit)
   cloudbase:
-    units: 'stop'
+    units: 'stop' # cloudbase units
