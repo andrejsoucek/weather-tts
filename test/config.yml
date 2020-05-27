@@ -7,11 +7,15 @@ message:
     bearingUnits: 'stupňů'
     gust: 'Nárazy'
   rwy:
-    27: '> 180'
-    09: '<= 180'
+    - number: '27'
+      condition: '> 180'
+    - number: '09'
+      condition: '<= 180'
   circuits:
-    levé: '> 180'
-    pravé: '<= 180'
+    - text: 'levé'
+      condition: '> 180'
+    - text: 'pravé'
+      condition: '<= 180'
   temperature:
     units: 'stupňů'
   cloudbase:

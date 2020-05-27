@@ -56,14 +56,13 @@ function _formatWind(speed, gust, bearing, cfg) {
  */
 function _formatRwy(bearing, cfg) {
   bearing = parseFloat(bearing);
-  for (const [rwy, condition] of Object.entries(cfg)) {
-    if (cfg.hasOwnProperty(rwy)) {
-      const xs = condition.split(' ');
-      const operator = xs[0];
-      const value = xs[1];
-      if (utils.operators.hasOwnProperty(operator) && utils.operators[operator](bearing, value)) {
-        return rwy.padStart(2, '0').split('').join(' ') + ' ';
-      }
+  for (let i = 0; i < cfg.length; i++) {
+    const c = cfg[i];
+    const xs = c.condition.split(' ');
+    const operator = xs[0];
+    const value = xs[1];
+    if (utils.operators.hasOwnProperty(operator) && utils.operators[operator](bearing, value)) {
+      return c.number.padStart(2, '0').split('').join(' ') + ' ';
     }
   }
   return '';
@@ -77,14 +76,13 @@ function _formatRwy(bearing, cfg) {
  */
 function _formatCircuit(bearing, cfg) {
   bearing = parseFloat(bearing);
-  for (const [circuit, condition] of Object.entries(cfg)) {
-    if (cfg.hasOwnProperty(circuit)) {
-      const xs = condition.split(' ');
-      const operator = xs[0];
-      const value = xs[1];
-      if (utils.operators.hasOwnProperty(operator) && utils.operators[operator](bearing, value)) {
-        return circuit;
-      }
+  for (let i = 0; i < cfg.length; i++) {
+    const c = cfg[i];
+    const xs = c.condition.split(' ');
+    const operator = xs[0];
+    const value = xs[1];
+    if (utils.operators.hasOwnProperty(operator) && utils.operators[operator](bearing, value)) {
+      return c.text;
     }
   }
   return '';

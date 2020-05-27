@@ -10,7 +10,7 @@ const path = require('path');
 
 const cfg = YAML.parse(fs.readFileSync(path.join(__dirname, '../config/config.yml'), 'utf8'));
 
-process.env.GOOGLE_APPLICATION_CREDENTIALS=cfg.google.auth.path;
+process.env.GOOGLE_APPLICATION_CREDENTIALS=cfg.google.auth.keyPath;
 
 let working = false;
 let tries = 0;
@@ -46,7 +46,6 @@ function _fetch(cfg) {
   if (working === true) {
     return;
   }
-  console.log('fetch');
   working = true;
   axios.get(cfg.realtime.url)
       .then((response) => {

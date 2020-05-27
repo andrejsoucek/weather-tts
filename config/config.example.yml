@@ -2,7 +2,7 @@ gpio:
   pin: 4 # pin number to trigger the tts
 google:
   auth:
-    path: '/home/user/auth.json' # path to the auth key
+    keyPath: '/home/user/auth.json' # path to the auth key
   tts:
     language: 'cs-CZ' # language code https://cloud.google.com/text-to-speech/docs/voices
 realtime:
@@ -16,11 +16,15 @@ message:
     bearingUnits: 'stupňů' # Wind bearing units
     gust: 'nárazy' # Wind gusts
   rwy:
-    27: '> 180' # Runway 27 will be set if the wind bearing is > 180
-    09: '<= 180' # Runway 09 will be set if the wind bearing is <= 180
+    - number: '27'        # Runway 27 will be set if the wind bearing is > 180
+      condition: '> 180'  # THERE MUST BE A SPACE BETWEEN THE OPERATOR AND THE NUMBER
+    - number: '09'        # Runway 09 will be set if the wind bearing is <= 180
+      condition: '<= 180' # THERE MUST BE A SPACE BETWEEN THE OPERATOR AND THE NUMBER
   circuits:
-    levé: '> 180' # levé circuits will be set if the wind bearing is > 180
-    pravé: '<= 180' # pravé circuits will be set if the wind bearing is <= 180
+    - text: 'levé'        # levé circuits will be set if the wind bearing is > 180
+      condition: '> 180'  # THERE MUST BE A SPACE BETWEEN THE OPERATOR AND THE NUMBER
+    - text: 'pravé'       # pravé circuits will be set if the wind bearing is <= 180
+      condition: '<= 180' # THERE MUST BE A SPACE BETWEEN THE OPERATOR AND THE NUMBER
   temperature:
     units: 'stupňů' # temperature units (degrees, not Celsius or Fahrenheit)
   cloudbase:

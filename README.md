@@ -8,7 +8,7 @@
 ## Getting Started
 2. Clone this repo.
 2. Create config `cp config/config.example.yml config/config.yml`.
-2. Edit the config for your needs.
+2. Edit the config for your needs. You can validate it by running `npm run checkCfg`
 2. Launch `node src/main.js` or `node .`.
 
 ## Message template & placeholders
