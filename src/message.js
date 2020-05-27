@@ -10,7 +10,7 @@ function createFrom(weather, cfg) {
   const template = cfg.template;
   return template
       .replace('<#TIME>', _formatTime(weather.time, cfg.timezoneOffset))
-      .replace('<#WIND>', _formatWind(weather.wspeed, weather.wgust, weather.bearing, weather.windunit, cfg.wind))
+      .replace('<#WIND>', _formatWind(weather.wspeed, weather.wgust, weather.bearing, cfg.wind))
       .replace('<#RWY>', _formatRwy(weather.bearing, cfg.rwy))
       .replace('<#CIRCUIT>', _formatCircuit(weather.bearing, cfg.circuits))
       .replace('<#TEMP>', _formatTemperature(weather.temp, cfg.temperature))
@@ -34,12 +34,11 @@ function _formatTime(time, tzOffset) {
  * @param {string} speed
  * @param {string} gust
  * @param {string} bearing
- * @param {string} unit
  * @param {object} cfg
  * @return {string}
  * @private
  */
-function _formatWind(speed, gust, bearing, unit, cfg) {
+function _formatWind(speed, gust, bearing, cfg) {
   speed = parseFloat(speed);
   if (speed < 2) {
     return cfg.calm;

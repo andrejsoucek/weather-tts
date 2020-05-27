@@ -2,7 +2,7 @@ const axios = require('axios');
 const realtime = require('./realtime');
 const message = require('./message');
 const tts = require('./tts');
-const player = require('play-sound')(opts = {player: 'mpg123'});
+const player = require('./player');
 const Gpio = require('onoff').Gpio;
 const YAML = require('yaml');
 const fs = require('fs');
@@ -13,6 +13,7 @@ const cfg = YAML.parse(fs.readFileSync(path.join(__dirname, '../config/config.ym
 process.env.GOOGLE_APPLICATION_CREDENTIALS=cfg.google.auth.path;
 
 let working = false;
+let tries = 0;
 
 /**
  * @param {object} cfg
@@ -20,7 +21,8 @@ let working = false;
  */
 function run(cfg) {
   if (Gpio.accessible) {
-    const button = new Gpio(cfg.gpio.pin, 'in', Gpio.HIGH);
+    console.log(`Running. Waiting for input on pin ${cfg.gpio.pin}`);
+    const button = new Gpio(cfg.gpio.pin, 'in', 'both');
     button.watch((err, value) => {
       if (err) {
         console.log(err);
@@ -44,13 +46,17 @@ function _fetch(cfg) {
   if (working === true) {
     return;
   }
+  console.log('fetch');
   working = true;
   axios.get(cfg.realtime.url)
       .then((response) => {
-        _synthesizeAndPlay(response, cfg);
+        return _synthesizeAndPlay(response, cfg);
       })
       .catch((err) => {
-        console.log(err);
+        working = false;
+        tryAgain(cfg);
+      })
+      .finally(() => {
         working = false;
       });
 }
@@ -59,26 +65,33 @@ function _fetch(cfg) {
  * Uses TTS and plays the output (mpg123 player).
  * @param {AxiosResponse} response
  * @param {object} cfg
+ * @return {Promise}
  * @private
  */
 function _synthesizeAndPlay(response, cfg) {
   const weather = realtime.parse(response.data);
   const msg = message.createFrom(weather, cfg.message);
   const output = path.join(__dirname, '../output.mp3');
-  tts.synthesize(msg, output, cfg.google.tts.language)
+  return tts.synthesize(msg, output, cfg.google.tts.language)
       .then(() => {
-        console.log('Audio content written to file: output.mp3');
-        player.play(output, (err) => {
-          if (err) {
-            console.log(err);
-          }
-          working = false;
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        working = false;
+        return player.play(output);
       });
+}
+
+/**
+ * Tries to repeat the process in case of an error.
+ * Limited to 3 repeats. Each after 750 ms.
+ * @param {object} cfg
+ */
+function tryAgain(cfg) {
+  if (tries < 3) {
+    tries++;
+    setTimeout(() => {
+      _fetch(cfg);
+    }, 750);
+  } else {
+    process.exit();
+  }
 }
 
 run(cfg);
