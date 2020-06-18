@@ -1,0 +1,86 @@
+import { Weather } from '../parser/Weather';
+import { Operation } from './Operation';
+import { MessageConfig } from '../config/MessageConfig';
+import { TextCondition } from '../config/TextCondition';
+import { UnitsConfig } from '../config/UnitsConfig';
+import { Comparator } from './Comparator';
+
+export default class Message {
+    private static operations = new Map<Comparator, Operation>([
+      ['<', (a: number, b: number) => a < b],
+      ['>', (a: number, b: number) => a > b],
+      ['<=', (a: number, b: number) => a <= b],
+      ['>=', (a: number, b: number) => a >= b],
+    ]);
+
+    static createFrom(weather: Weather, cfg: MessageConfig): string {
+      const { template } = cfg;
+      return template
+        .replace('<#TIME>', this.formatTime(weather.time, cfg.timezoneOffset))
+        .replace('<#WIND>', this.formatWind(weather.wspeed, weather.wgust, weather.bearing, cfg.wind))
+        .replace('<#RWY>', this.formatRwy(weather.bearing, cfg.rwy))
+        .replace('<#CIRCUIT>', this.formatCircuit(weather.bearing, cfg.circuits))
+        .replace('<#TEMP>', this.formatTemperature(weather.temp, cfg.temperature))
+        .replace('<#CLOUDBASE>', this.formatCloudbase(weather.cloudbasevalue, cfg.cloudbase))
+        .replace('<#QNH>', this.formatQnh(weather.press));
+    }
+
+    private static formatTime(time: string, tzOffset: string = '0'): string {
+      const split = time.split(':');
+      const hours = parseInt(split[0], 10) - parseInt(tzOffset, 10);
+      return `${hours} ${split[1]} UTC`;
+    }
+
+    private static formatWind(
+      speed: string, gust: string, bearing: string, cfg: Record<string, string>,
+    ): string {
+      const speedFloat = parseFloat(speed);
+      if (speedFloat < 2) {
+        return cfg.calm;
+      }
+      const u = cfg.speedUnits;
+      const g = parseFloat(gust) - speedFloat > 3 ? `. ${cfg.gust} ${Math.round(parseFloat(gust))} ${u}` : '';
+      return `${Math.round(parseFloat(speed))} ${u}, ${bearing} ${cfg.bearingUnits}${g}`;
+    }
+
+    private static formatRwy(bearing: string, cfg: Array<TextCondition>): string {
+      for (let i = 0; i < cfg.length; i += 1) {
+        const c = cfg[i];
+        const xs = c.condition.split(' ');
+        const operator = xs[0] as Comparator;
+        const value = xs[1];
+        if (this.operations.has(operator)
+            && this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+          return `${c.result.padStart(2, '0').split('').join(' ')} `;
+        }
+      }
+      return '';
+    }
+
+    private static formatCircuit(bearing: string, cfg: Array<TextCondition>): string {
+      for (let i = 0; i < cfg.length; i += 1) {
+        const c = cfg[i];
+        const xs = c.condition.split(' ');
+        const operator = xs[0] as Comparator;
+        const value = xs[1];
+        if (this.operations.has(operator)
+              && this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+          return c.result;
+        }
+      }
+      return '';
+    }
+
+    private static formatTemperature(temperature: string, cfg: UnitsConfig): string {
+      return `${Math.round(parseFloat(temperature)).toString()} ${cfg.units}`;
+    }
+
+    private static formatCloudbase(cloudbase: string, cfg: UnitsConfig): string {
+      return `${cloudbase} ${cfg.units}`;
+    }
+
+    private static formatQnh(pressure: string): string {
+      const string = Math.round(parseFloat(pressure)).toString();
+      return string.split('').join(' ');
+    }
+}

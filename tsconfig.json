@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "lib": [
+      "es2018"
+    ],
+    "target": "es2018",
+    "module": "commonjs",
+    "outDir": "./build",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "types": ["node", "mocha"],
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "*" : ["@types/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "@types"
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "test/*"
+  ],
+  "exclude": [
+    "examples"
+  ]
+}
