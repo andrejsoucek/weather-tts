@@ -3,14 +3,14 @@ import { Operation } from './Operation';
 import { MessageConfig } from '../config/MessageConfig';
 import { TextCondition } from '../config/TextCondition';
 import { UnitsConfig } from '../config/UnitsConfig';
-import { Comparator } from './Comparator';
+import Comparators from './Comparators';
 
 export default class Message {
-    private static operations = new Map<Comparator, Operation>([
-      ['<', (a: number, b: number) => a < b],
-      ['>', (a: number, b: number) => a > b],
-      ['<=', (a: number, b: number) => a <= b],
-      ['>=', (a: number, b: number) => a >= b],
+    private static operations = new Map<Comparators, Operation>([
+      [Comparators.LESS_THAN, (a: number, b: number) => a < b],
+      [Comparators.HIGHER_THAN, (a: number, b: number) => a > b],
+      [Comparators.LESS_THAN_OR_EQUAL, (a: number, b: number) => a <= b],
+      [Comparators.HIGHER_THAN_OR_EQUAL, (a: number, b: number) => a >= b],
     ]);
 
     static createFrom(weather: Weather, cfg: MessageConfig): string {
@@ -47,10 +47,9 @@ export default class Message {
       for (let i = 0; i < cfg.length; i += 1) {
         const c = cfg[i];
         const xs = c.condition.split(' ');
-        const operator = xs[0] as Comparator;
+        const operator = xs[0] as Comparators;
         const value = xs[1];
-        if (this.operations.has(operator)
-            && this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+        if (this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
           return `${c.result.padStart(2, '0').split('').join(' ')} `;
         }
       }
@@ -61,10 +60,9 @@ export default class Message {
       for (let i = 0; i < cfg.length; i += 1) {
         const c = cfg[i];
         const xs = c.condition.split(' ');
-        const operator = xs[0] as Comparator;
+        const operator = xs[0] as Comparators;
         const value = xs[1];
-        if (this.operations.has(operator)
-              && this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+        if (this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
           return c.result;
         }
       }
