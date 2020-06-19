@@ -4,8 +4,8 @@ import { RealtimeConfig } from './RealtimeConfig';
 import { MessageConfig } from './MessageConfig';
 
 export interface Config {
-    gpio: GpioConfig,
-    google: GoogleConfig,
-    realtime: RealtimeConfig,
-    message: MessageConfig,
+    gpio: GpioConfig;
+    google: GoogleConfig;
+    realtime: RealtimeConfig;
+    message: MessageConfig;
 }

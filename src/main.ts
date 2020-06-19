@@ -3,12 +3,12 @@ import YAML from 'yaml';
 import * as fs from 'fs';
 import axios from 'axios';
 import { Gpio } from 'onoff';
-import RealtimeParser from './parser/RealtimeParser';
+import { RealtimeParser } from './parser/RealtimeParser';
 import { Weather } from './parser/Weather';
-import Synthesizer from './tts/Synthesizer';
-import Player from './tts/Player';
-import Message from './message/Message';
-import Checker from './config/Checker';
+import { Synthesizer } from './tts/Synthesizer';
+import { Player } from './tts/Player';
+import { Message } from './message/Message';
+import { Checker } from './config/Checker';
 import { Config } from './config/Config';
 
 const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '../config/config.yml'), 'utf8'));
@@ -56,7 +56,7 @@ function tryAgain(cfg: Config): void {
   }
 }
 
-function run(cfg: Config) {
+function run(cfg: Config): void {
   Checker.check(cfg);
   if (Gpio.accessible) {
     console.log(`Running. Waiting for input on pin ${cfg.gpio.pin}`);

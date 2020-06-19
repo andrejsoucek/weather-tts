@@ -1,4 +1,4 @@
 export interface TextCondition {
-    condition: string,
-    result: string
+    condition: string;
+    result: string;
 }

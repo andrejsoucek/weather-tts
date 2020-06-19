@@ -1,7 +1,7 @@
 import { Weather } from './Weather';
 import { Parser } from './Parser';
 
-export default class RealtimeParser implements Parser {
+export class RealtimeParser implements Parser {
     private readonly structure: Map<string, number> = new Map([
       ['date', 0],
       ['time', 1],
@@ -68,6 +68,7 @@ export default class RealtimeParser implements Parser {
       if (data.length !== 59) {
         throw Error('Unexpected realtime.txt format.');
       }
+
       return [...this.structure.entries()].reduce((acc, [value, key]) => ({
         ...acc,
         [value]: data[key],

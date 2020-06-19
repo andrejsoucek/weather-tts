@@ -1,3 +1,3 @@
 export interface UnitsConfig {
-    units: string
+    units: string;
 }

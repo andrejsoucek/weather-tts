@@ -2,7 +2,7 @@ import { Config } from './Config';
 
 const validate = require('yaml-schema-validator');
 
-export default class Checker {
+export class Checker {
   private static readonly structure = {
     gpio: {
       pin: { type: Number, required: true },

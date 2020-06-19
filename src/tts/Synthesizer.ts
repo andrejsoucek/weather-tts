@@ -7,7 +7,7 @@ import SynthesizeSpeechRequest = google.cloud.texttospeech.v1.SynthesizeSpeechRe
 
 const client = new TextToSpeechClient();
 
-export default class Synthesizer {
+export class Synthesizer {
   static async synthesize(text: string, outputPath: string, language: string): Promise<void> {
     const properties = {
       input: { text },
@@ -18,6 +18,9 @@ export default class Synthesizer {
 
     const response = await client.synthesizeSpeech(request);
     const writeFile = util.promisify(fs.writeFile);
-    await writeFile(outputPath, response[0].audioContent!, 'binary');
+    const audio = response[0];
+    if (audio && audio.audioContent) {
+      await writeFile(outputPath, audio.audioContent, 'binary');
+    }
   }
 }

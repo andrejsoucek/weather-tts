@@ -3,7 +3,7 @@ import YAML from 'yaml';
 import * as fs from 'fs';
 import path from 'path';
 import { describe, it } from 'mocha';
-import Message from '../src/message/Message';
+import { Message } from '../src/message/Message';
 import { Weather } from '../src/parser/Weather';
 import { Config } from '../src/config/Config';
 

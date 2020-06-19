@@ -1,3 +1,1 @@
-export interface Operation {
-    (x: number, y: number): boolean
-}
+export type Operation = (x: number, y: number) => boolean;

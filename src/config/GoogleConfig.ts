@@ -1,8 +1,8 @@
 export interface GoogleConfig {
     auth: {
-        keyPath: string
-    },
+        keyPath: string;
+    };
     tts: {
-        language: string
-    }
+        language: string;
+    };
 }

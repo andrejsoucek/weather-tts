@@ -3,9 +3,9 @@ import { Operation } from './Operation';
 import { MessageConfig } from '../config/MessageConfig';
 import { TextCondition } from '../config/TextCondition';
 import { UnitsConfig } from '../config/UnitsConfig';
-import Comparators from './Comparators';
+import { Comparators } from './Comparators';
 
-export default class Message {
+export class Message {
     private static operations = new Map<Comparators, Operation>([
       [Comparators.LESS_THAN, (a: number, b: number) => a < b],
       [Comparators.HIGHER_THAN, (a: number, b: number) => a > b],
@@ -15,6 +15,7 @@ export default class Message {
 
     static createFrom(weather: Weather, cfg: MessageConfig): string {
       const { template } = cfg;
+
       return template
         .replace('<#TIME>', this.formatTime(weather.time, cfg.timezoneOffset))
         .replace('<#WIND>', this.formatWind(weather.wspeed, weather.wgust, weather.bearing, cfg.wind))
@@ -25,9 +26,10 @@ export default class Message {
         .replace('<#QNH>', this.formatQnh(weather.press));
     }
 
-    private static formatTime(time: string, tzOffset: string = '0'): string {
+    private static formatTime(time: string, tzOffset = '0'): string {
       const split = time.split(':');
       const hours = parseInt(split[0], 10) - parseInt(tzOffset, 10);
+
       return `${hours} ${split[1]} UTC`;
     }
 
@@ -40,6 +42,7 @@ export default class Message {
       }
       const u = cfg.speedUnits;
       const g = parseFloat(gust) - speedFloat > 3 ? `. ${cfg.gust} ${Math.round(parseFloat(gust))} ${u}` : '';
+
       return `${Math.round(parseFloat(speed))} ${u}, ${bearing} ${cfg.bearingUnits}${g}`;
     }
 
@@ -49,10 +52,12 @@ export default class Message {
         const xs = c.condition.split(' ');
         const operator = xs[0] as Comparators;
         const value = xs[1];
-        if (this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+        const operation = this.operations.get(operator);
+        if (operation && operation(parseFloat(bearing), parseInt(value, 10))) {
           return `${c.result.padStart(2, '0').split('').join(' ')} `;
         }
       }
+
       return '';
     }
 
@@ -62,10 +67,12 @@ export default class Message {
         const xs = c.condition.split(' ');
         const operator = xs[0] as Comparators;
         const value = xs[1];
-        if (this.operations.get(operator)!(parseFloat(bearing), parseInt(value, 10))) {
+        const operation = this.operations.get(operator);
+        if (operation && operation(parseFloat(bearing), parseInt(value, 10))) {
           return c.result;
         }
       }
+
       return '';
     }
 
@@ -79,6 +86,7 @@ export default class Message {
 
     private static formatQnh(pressure: string): string {
       const string = Math.round(parseFloat(pressure)).toString();
+
       return string.split('').join(' ');
     }
 }
