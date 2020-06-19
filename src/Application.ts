@@ -9,20 +9,35 @@ import { Player } from './tts/Player';
 import { RealtimeParser } from './parser/RealtimeParser';
 import { Checker } from './config/Checker';
 
-/* eslint-disable no-console */
 export class Application {
     private working = false;
 
     private tries = 0;
 
-    constructor(private readonly config: Config) {}
+    private button: Gpio | undefined;
+
+    private running = false;
+
+    constructor(private config: Config) {}
+
+    getConfig(): Config {
+      return this.config;
+    }
+
+    setConfig(cfg: Config): void {
+      this.config = cfg;
+    }
+
+    isRunning(): boolean {
+      return this.running;
+    }
 
     run(): void {
       Checker.check(this.config);
       if (Gpio.accessible) {
         console.log(`Running. Waiting for input on pin ${this.config.gpio.pin}`);
-        const button = new Gpio(this.config.gpio.pin, 'in', 'both');
-        button.watch((err, value) => {
+        this.button = new Gpio(this.config.gpio.pin, 'in', 'both');
+        this.button.watch((err, value) => {
           console.log(`Received signal: ${value}`);
           if (err) {
             console.log(err);
@@ -35,6 +50,17 @@ export class Application {
           this.fetch(this.config);
         });
       }
+      this.running = true;
+    }
+
+    stop(): void {
+      if (this.button) {
+        this.button.unwatchAll();
+      } else {
+        process.stdin.removeAllListeners();
+      }
+      console.log('Application stopped.');
+      this.running = false;
     }
 
     private async fetch(cfg: Config): Promise<void> {
