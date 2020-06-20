@@ -8,14 +8,18 @@ message:
     gust: 'Nárazy'
   rwy:
     - result: '27'
-      condition: '> 180'
+      comparator: '>'
+      value: 180
     - result: '09'
-      condition: '<= 180'
+      comparator: '<='
+      value: 180
   circuits:
     - result: 'levé'
-      condition: '> 180'
+      comparator: '>'
+      value: 180
     - result: 'pravé'
-      condition: '<= 180'
+      comparator: '<='
+      value: 180
   temperature:
     units: 'stupňů'
   cloudbase:

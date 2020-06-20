@@ -30,13 +30,15 @@ export class Checker {
       rwy: [
         {
           result: { type: String, required: true },
-          condition: { type: String, required: true },
+          comparator: { type: String, required: true },
+          value: { type: Number, required: true },
         },
       ],
       circuits: [
         {
           result: { type: String, required: true },
-          condition: { type: String, required: true },
+          comparator: { type: String, required: true },
+          value: { type: Number, required: true },
         },
       ],
       temperature: {

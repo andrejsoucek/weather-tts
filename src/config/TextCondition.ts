@@ -1,4 +1,5 @@
 export interface TextCondition {
-    condition: string;
+    comparator: string;
+    value: number;
     result: string;
 }

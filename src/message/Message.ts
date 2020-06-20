@@ -49,11 +49,9 @@ export class Message {
     private static formatRwy(bearing: string, cfg: Array<TextCondition>): string {
       for (let i = 0; i < cfg.length; i += 1) {
         const c = cfg[i];
-        const xs = c.condition.split(' ');
-        const operator = xs[0] as Comparators;
-        const value = xs[1];
-        const operation = this.operations.get(operator);
-        if (operation && operation(parseFloat(bearing), parseInt(value, 10))) {
+        const comparator = c.comparator as Comparators;
+        const operation = this.operations.get(comparator);
+        if (operation && operation(parseFloat(bearing), c.value)) {
           return `${c.result.padStart(2, '0').split('').join(' ')} `;
         }
       }
@@ -64,11 +62,9 @@ export class Message {
     private static formatCircuit(bearing: string, cfg: Array<TextCondition>): string {
       for (let i = 0; i < cfg.length; i += 1) {
         const c = cfg[i];
-        const xs = c.condition.split(' ');
-        const operator = xs[0] as Comparators;
-        const value = xs[1];
-        const operation = this.operations.get(operator);
-        if (operation && operation(parseFloat(bearing), parseInt(value, 10))) {
+        const comparator = c.comparator as Comparators;
+        const operation = this.operations.get(comparator);
+        if (operation && operation(parseFloat(bearing), c.value)) {
           return c.result;
         }
       }
