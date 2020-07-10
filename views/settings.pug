@@ -12,15 +12,16 @@ html(lang='en')
             div.container
                 h1.is-size-1 Settings
                 div.buttons
-                    a(href='/start', class=appRunning ? 'is-hidden': '').button.is-success
-                        span.icon
-                            i.fas.fa-play
-                        span Start application
-                    a(href='/stop', class=!appRunning ? 'is-hidden': '').button.is-danger
-                        span.icon
-                            i.fas.fa-pause
-                        span Pause application
-
+                    if appRunning
+                        a(href='/stop').button.is-danger
+                            span.icon
+                                i.fas.fa-pause
+                            span Pause application
+                    else
+                        a(href='/start').button.is-success
+                            span.icon
+                                i.fas.fa-play
+                            span Start application
                 div.tabs
                     ul
                         li(data-tab='general').is-active
@@ -66,19 +67,19 @@ html(lang='en')
                         ul
                             li
                                 strong <#TIME>
-                                | - UTC time
+                                |  - UTC time
                             li
                                 strong <#WIND>
-                                | - wind information, calm when < 2 kts
+                                |  - wind information, calm when < 2 kts
                             li
                                 strong <#RWY>
-                                | - runway in use
+                                |  - runway in use
                             li
                                 strong <#CIRCUIT>
-                                | - left/right hand pattern
+                                |  - left/right hand pattern
                             li
                                 strong <#TEMP>
-                                | - temperature
+                                |  - temperature
                             li
                                 strong <#CLOUDBASE>
                             li
