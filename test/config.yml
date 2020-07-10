@@ -5,7 +5,7 @@ message:
     calm: 'klid'
     speedUnits: 'uzlů'
     bearingUnits: 'stupňů'
-    gust: 'Nárazy'
+    gust: 'Náraz'
   rwy:
     - result: '27'
       comparator: '>'

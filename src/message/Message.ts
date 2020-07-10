@@ -40,10 +40,11 @@ export class Message {
       if (speedFloat < 2) {
         return cfg.calm;
       }
-      const u = cfg.speedUnits;
-      const g = parseFloat(gust) - speedFloat > 3 ? `. ${cfg.gust} ${Math.round(parseFloat(gust))} ${u}` : '';
+      const b = `${bearing.split('').join(' ')} ${cfg.bearingUnits}`;
+      const s = `${Math.round(parseFloat(speed)).toString().split('').join(' ')} ${cfg.speedUnits}`;
+      const g = parseFloat(gust) - speedFloat > 3 ? `. ${cfg.gust} ${Math.round(parseFloat(gust)).toString().split('').join(' ')}` : '';
 
-      return `${Math.round(parseFloat(speed))} ${u}, ${bearing} ${cfg.bearingUnits}${g}`;
+      return `${b} ${s}${g} `;
     }
 
     private static formatRwy(bearing: string, cfg: Array<TextCondition>): string {

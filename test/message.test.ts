@@ -35,21 +35,21 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 5 uzlů, 220 stupňů. Dráha v používání 2 7 . '
-        + 'Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 2 2 0 stupňů 5 uzlů . '
+        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
   });
   it('runway 27, left circuits, wind with gusts in kts', () => {
     const msg = Message.createFrom(<Weather>{
       time: '14:00:54',
-      wspeed: '4.8',
-      wgust: '8.8',
+      wspeed: '18.3',
+      wgust: '27.8',
       bearing: '220',
       windunit: 'kts',
       temp: '20',
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 5 uzlů, 220 stupňů. Nárazy 9 uzlů. '
+    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 2 2 0 stupňů 1 8 uzlů. Náraz 2 8 . '
         + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
   });
   it('minus timezone', () => {
@@ -64,7 +64,7 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 15 00 UTC. Vítr 5 uzlů, 220 stupňů. Nárazy 9 uzlů. '
+    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 15 00 UTC. Vítr 2 2 0 stupňů 5 uzlů. Náraz 9 . '
         + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
   });
   it('no timezone shift', () => {
@@ -79,7 +79,7 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 14 00 UTC. Vítr 5 uzlů, 220 stupňů. Nárazy 9 uzlů. '
+    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 14 00 UTC. Vítr 2 2 0 stupňů 5 uzlů. Náraz 9 . '
         + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
   });
 });
