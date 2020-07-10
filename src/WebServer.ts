@@ -1,4 +1,5 @@
 import express from 'express';
+import { logger } from './logger/Logger';
 
 export class WebServer {
     private readonly app: express.Application;
@@ -12,7 +13,7 @@ export class WebServer {
 
     public listen(): void {
       this.app.listen(this.port, () => {
-        console.log(`The application settings can be changed on localhost:${this.port}`);
+        logger.info(`The application settings can be changed on localhost:${this.port}`);
       });
     }
 

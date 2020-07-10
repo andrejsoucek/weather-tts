@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Application } from '../Application';
+import { logger } from '../logger/Logger';
 
 export class StopController {
     public path = '/stop';
@@ -11,7 +12,7 @@ export class StopController {
     }
 
     stopApplication = (_: Request, response: Response): void => {
-      console.log('Stopping the application.');
+      logger.info('Stopping the application.');
       this.app.stop();
       response.redirect('/');
     };

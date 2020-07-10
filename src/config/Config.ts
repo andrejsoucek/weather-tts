@@ -5,6 +5,7 @@ import { GpioConfig } from './GpioConfig';
 import { GoogleConfig } from './GoogleConfig';
 import { RealtimeConfig } from './RealtimeConfig';
 import { MessageConfig } from './MessageConfig';
+import { logger } from '../logger/Logger';
 
 export interface Config {
     gpio: GpioConfig;
@@ -74,10 +75,9 @@ function createCfgFrom(values: any): Config {
 
 export function saveConfig(values: any): Config {
   const cfg = createCfgFrom(values);
-  console.log(path.join(__dirname, '../../config/config.yml'));
   fs.writeFile(path.join(__dirname, '../../config/config.yml'), YAML.stringify(cfg), 'utf-8', (e: NodeJS.ErrnoException | null) => {
     if (e) {
-      console.log(e);
+      logger.error(e.message);
     }
   });
 

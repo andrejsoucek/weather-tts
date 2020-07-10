@@ -8,6 +8,7 @@ import { Synthesizer } from './tts/Synthesizer';
 import { Player } from './tts/Player';
 import { RealtimeParser } from './parser/RealtimeParser';
 import { Checker } from './config/Checker';
+import { logger } from './logger/Logger';
 
 export class Application {
     private working = false;
@@ -35,17 +36,17 @@ export class Application {
     run(): void {
       Checker.check(this.config);
       if (Gpio.accessible) {
-        console.log(`Running. Waiting for input on pin ${this.config.gpio.pin}`);
+        logger.info(`Running. Waiting for input on pin ${this.config.gpio.pin}`);
         this.button = new Gpio(this.config.gpio.pin, 'in', 'both');
         this.button.watch((err, value) => {
-          console.log(`Received signal: ${value}`);
+          logger.info(`Received signal: ${value}`);
           if (err) {
-            console.log(err);
+            logger.error(err);
           }
           this.fetch(this.config);
         });
       } else {
-        console.log('GPIO not available. Press enter to pull the trigger.');
+        logger.info('GPIO not available. Press enter to pull the trigger.');
         process.stdin.on('data', () => {
           this.fetch(this.config);
         });
@@ -59,7 +60,7 @@ export class Application {
       } else {
         process.stdin.removeAllListeners();
       }
-      console.log('Application stopped.');
+      logger.info('Application stopped.');
       this.running = false;
     }
 
@@ -74,7 +75,7 @@ export class Application {
         const weather = await parser.parse(response.data);
         await this.synthesizeAndPlay(weather, cfg);
       } catch (err) {
-        console.trace(err);
+        logger.error(err);
         this.working = false;
         // eslint-disable-next-line no-use-before-define
         this.tryAgain(cfg);

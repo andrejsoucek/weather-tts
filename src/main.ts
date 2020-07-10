@@ -10,7 +10,9 @@ import { SettingsController } from './website/SettingsController';
 import { StartController } from './website/StartController';
 import { StopController } from './website/StopController';
 
+// eslint-disable-next-line no-console
 console.log(figlet.textSync('Weather TTS', 'Mini'));
+// eslint-disable-next-line no-console
 console.log('==========================================');
 
 const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '../config/config.yml'), 'utf8'));

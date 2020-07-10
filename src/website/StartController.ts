@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Application } from '../Application';
+import { logger } from '../logger/Logger';
 
 export class StartController {
     public path = '/start';
@@ -11,7 +12,7 @@ export class StartController {
     }
 
     startApplication = (_: Request, response: Response): void => {
-      console.log('Starting the application.');
+      logger.info('Starting the application');
       this.app.run();
       response.redirect('/');
     };
