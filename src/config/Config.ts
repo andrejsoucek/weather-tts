@@ -75,11 +75,15 @@ function createCfgFrom(values: any): Config {
 
 export function saveConfig(values: any): Config {
   const cfg = createCfgFrom(values);
-  fs.writeFile(path.join(__dirname, '../../config/config.yml'), YAML.stringify(cfg), 'utf-8', (e: NodeJS.ErrnoException | null) => {
-    if (e) {
-      logger.error(e.message);
-    }
-  });
+  fs.writeFile(
+    path.join(__dirname, '..', '..', 'config', 'config.yml'),
+    YAML.stringify(cfg), 'utf-8',
+    (e: NodeJS.ErrnoException | null) => {
+      if (e) {
+        logger.error(e.message);
+      }
+    },
+  );
 
   return cfg;
 }

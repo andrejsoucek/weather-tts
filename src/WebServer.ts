@@ -20,8 +20,12 @@ export class WebServer {
     }
 
     private initializeStaticContent(): void {
-      this.app.use('/bulma', express.static(path.join(__dirname, '../../node_modules/bulma/css')));
-      this.app.use('/fa', express.static(path.join(__dirname, '../../node_modules/@fortawesome/fontawesome-free/js')));
+      this.app.use('/bulma', express.static(
+        path.join(__dirname, '..', '..', 'node_modules', 'bulma', 'css'),
+      ));
+      this.app.use('/fa', express.static(
+        path.join(__dirname, '..', '..', 'node_modules', '@fortawesome', 'fontawesome-free', 'js'),
+      ));
     }
 
     private initializeMiddlewares(middlewares: Array<any>): void {

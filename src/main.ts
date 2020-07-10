@@ -15,7 +15,7 @@ console.log(figlet.textSync('Weather TTS', 'Mini'));
 // eslint-disable-next-line no-console
 console.log('==========================================');
 
-const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '../config/config.yml'), 'utf8'));
+const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'config.yml'), 'utf8'));
 
 process.env.GOOGLE_APPLICATION_CREDENTIALS = config.google.auth.keyPath;
 

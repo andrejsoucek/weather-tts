@@ -7,7 +7,7 @@ import { Message } from '../src/message/Message';
 import { Weather } from '../src/parser/Weather';
 import { Config } from '../src/config/Config';
 
-const cfg = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, './config.yml'), 'utf8'));
+const cfg = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, 'config.yml'), 'utf8'));
 
 describe('Message', () => {
   it('runway 09, right circuits, no wind', () => {

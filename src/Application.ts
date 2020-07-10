@@ -86,7 +86,7 @@ export class Application {
 
     private async synthesizeAndPlay(weather: Weather, cfg: Config): Promise<void> {
       const msg = Message.createFrom(weather, cfg.message);
-      const output = path.join(__dirname, '../output.mp3');
+      const output = path.join(__dirname, '..', 'output.mp3');
       await Synthesizer.synthesize(msg, output, cfg.google.tts.language);
       await Player.play(output);
       this.tries = 0;
