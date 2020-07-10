@@ -35,15 +35,18 @@ html(lang='en')
                             label(for='gpio').label GPIO PIN Number:
                             div.control
                                 input#gpio.input(type='number', name='gpio', value=config.gpio.pin)
+                            p.help Raspberry pin number which will trigger the TTS
                         div.field
                             label(for='realtime-url').label Realtime.txt URL:
                             div.control
                                 input#realtime-url.input(type='text', name='realtime-url', value=config.realtime.url)
+                            p.help URL to fetch the weather from
                     div(data-tabs-content='google').is-hidden
                         div.field
                             label(for='google-key').label Google key path:
                             div.control
                                 input#google-key.input(type='text', name='google-key', value=config.google.auth.keyPath)
+                            p.help Authentication key for the Google Cloud Services
                         div.field
                             label(for='google-language').label TTS language:
                             div.control
@@ -51,12 +54,35 @@ html(lang='en')
                                     select#google-language(name='google-language')
                                         each lang in languages
                                             option(value=lang.id, selected=lang.selected) #{lang.label}
+                            p.help Language of the message
                     div(data-tabs-content='message').is-hidden
+                        h2.is-size-3 Message
                         div.field
                             label(for='message-template').label Message template:
                             div.control
                                 textarea#message-template(name='message-template', rows='6', cols='66').textarea
                                     | #{config.message.template}
+                        h3.is-size-4 Placeholders
+                        ul
+                            li
+                                strong <#TIME>
+                                | - UTC time
+                            li
+                                strong <#WIND>
+                                | - wind information, calm when < 2 kts
+                            li
+                                strong <#RWY>
+                                | - runway in use
+                            li
+                                strong <#CIRCUIT>
+                                | - left/right hand pattern
+                            li
+                                strong <#TEMP>
+                                | - temperature
+                            li
+                                strong <#CLOUDBASE>
+                            li
+                                strong <#QNH>
                         h2.is-size-3 Time
                         div.field
                             label(for='message-timezone-offset').label Timezone offset:
@@ -65,6 +91,7 @@ html(lang='en')
                                     select#message-timezone-offset(name='message-timezone-offset')
                                         each tz in tzs
                                             option(value=tz.id, selected=tz.selected) #{tz.label}
+                            p.help Time difference from the realtime.txt, use '0' if no change needed
                         h2.is-size-3 Wind
                         div.field
                             label(for='message-wind-calm').label Wind calm:
@@ -107,6 +134,7 @@ html(lang='en')
                                     div.field.is-narrow then use runway
                                     div.field.is-narrow
                                         input(id='message-rwy-result-' + index, type='number', name='message-rwy-result-' + index, value=rwy.result, min=1, max=36, step=1).input
+                        h2.is-size-3 Circuit/Pattern
                         each c, index in circuitSettings
                             div.field.is-narrow
                                 label(for='message-circuit-comparator-' + index).label.is-narrow If wind direction
@@ -119,9 +147,10 @@ html(lang='en')
                                                         option(value=option.id, selected=option.selected) #{option.label}
                                     div.field.is-narrow
                                         input(id='message-circuit-value-' + index, type='number', name='message-circuit-value-' + index, value=c.value, min=1, max=360, step=1).input
-                                    div.field.is-narrow then use runway
+                                    div.field.is-narrow then fly
                                     div.field.is-narrow
                                         input(id='message-circuit-result-' + index, type='text', name='message-circuit-result-' + index, value=c.result).input
+                                    div.field.is-narrow pattern
                     div.field.mt-4.has-text-centered
                         div.control
                             input(type='submit', value='Save settings').button.is-primary
