@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import { logger } from './logger/Logger';
 
 export class WebServer {
@@ -6,6 +7,7 @@ export class WebServer {
 
     constructor(middlewares: Array<any>, controllers: Array<any>, private readonly port: number) {
       this.app = express();
+      this.initializeStaticContent();
       this.initializeMiddlewares(middlewares);
       this.initializeControllers(controllers);
       this.app.set('view engine', 'pug');
@@ -15,6 +17,11 @@ export class WebServer {
       this.app.listen(this.port, () => {
         logger.info(`The application settings can be changed on localhost:${this.port}`);
       });
+    }
+
+    private initializeStaticContent(): void {
+      this.app.use('/bulma', express.static(path.join(__dirname, '../../node_modules/bulma/css')));
+      this.app.use('/fa', express.static(path.join(__dirname, '../../node_modules/@fortawesome/fontawesome-free/js')));
     }
 
     private initializeMiddlewares(middlewares: Array<any>): void {
