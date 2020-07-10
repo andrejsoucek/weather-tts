@@ -35,7 +35,7 @@ export class Application {
 
     run(): void {
       Checker.check(this.config);
-      if (Gpio.accessible) {
+      if (Gpio.accessible && process.argv[2] !== 'test') {
         logger.info(`Running. Waiting for input on pin ${this.config.gpio.pin}`);
         this.button = new Gpio(this.config.gpio.pin, 'in', 'both');
         this.button.watch((err, value) => {
