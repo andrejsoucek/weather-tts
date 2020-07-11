@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-html(lang='en')
-    head
-        meta(charset='UTF-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        meta(http-equiv='X-UA-Compatible', content='ie=edge')
-        title Weather TTS Settings
-        script(defer, src='fa/all.js')
-        link(rel='stylesheet', href='bulma/bulma.min.css')
+extends @main.pug
     body
         section.section
             div.container
@@ -156,4 +148,3 @@ html(lang='en')
                         div.control
                             input(type='submit', value='Save settings').button.is-primary
     include ./tabs.pug
-    include ./footer.pug
