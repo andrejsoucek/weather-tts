@@ -2,3 +2,26 @@ extends ../@main.pug
 block active
     -var selected = 'dashboard'
 block content
+    h1.is-size-1 Dashboard
+    div.box.mt-5
+        nav.level
+            div.level-item.has-text-centered
+                div
+                    p.heading Messages created
+                    p.title 3,456
+            div.level-item.has-text-centered
+                div
+                    p.heading Daily
+                    p.title 123
+            div.level-item.has-text-centered
+                div
+                    p.heading Overall messages length
+                    p.title 456K
+            div.level-item.has-text-centered
+                div
+                    p.heading Errors
+                    p.title 0
+
+    div.box
+        div.columns.is-centered.pt-4.pb-4
+            img(src='https://via.placeholder.com/700x450' alt='placeholder')
