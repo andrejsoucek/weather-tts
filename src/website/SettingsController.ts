@@ -16,7 +16,7 @@ export class SettingsController {
 
     index = (_: Request, response: Response): void => {
       response.render(
-        'settings',
+        'settings/settings',
         {
           config: this.app.getConfig(),
           tzs: this.getTzs(),
