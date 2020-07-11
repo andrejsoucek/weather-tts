@@ -14,6 +14,6 @@ export class StopController {
     stopApplication = (_: Request, response: Response): void => {
       logger.info('Stopping the application.');
       this.app.stop();
-      response.redirect('/');
+      response.redirect('/settings');
     };
 }

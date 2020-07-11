@@ -5,7 +5,7 @@ import { Application } from '../Application';
 import { saveConfig } from '../config/Config';
 
 export class SettingsController {
-    public path = '/';
+    public path = '/settings';
 
     public router = Router();
 

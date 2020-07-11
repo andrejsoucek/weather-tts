@@ -9,6 +9,7 @@ import { WebServer } from './WebServer';
 import { SettingsController } from './website/SettingsController';
 import { StartController } from './website/StartController';
 import { StopController } from './website/StopController';
+import { DashboardController } from './website/DashboardController';
 
 // eslint-disable-next-line no-console
 console.log(figlet.textSync('Weather TTS', 'Mini'));
@@ -25,6 +26,7 @@ app.run();
 const web = new WebServer([
   bodyParser.urlencoded({ extended: true }),
 ], [
+  new DashboardController(),
   new SettingsController(app),
   new StartController(app),
   new StopController(app),

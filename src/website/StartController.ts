@@ -14,6 +14,6 @@ export class StartController {
     startApplication = (_: Request, response: Response): void => {
       logger.info('Starting the application');
       this.app.run();
-      response.redirect('/');
+      response.redirect('/settings');
     };
 }

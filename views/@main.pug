@@ -8,7 +8,10 @@ html(lang='en')
         script(defer, src='fa/all.js')
         link(rel='stylesheet', href='bulma/bulma.min.css')
     body
-        block content
+        section.section
+            div.container
+                include ./@menu.pug
+                block content
         footer.footer
             div.content.has-text-centered
                 strong Weather TTS
