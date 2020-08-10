@@ -1,3 +1,4 @@
 export interface GpioConfig {
-    pin: number;
+    input: number;
+    output: number;
 }

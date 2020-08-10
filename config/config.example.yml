@@ -1,5 +1,6 @@
 gpio:
-  pin: 4 # pin number to trigger the tts
+  input: 3 # GPIO pin number to trigger the Text-To-Speech  | GPIO3, pin 5 - trigger
+  output: 4 # GPIO pin number to Push-To-Talk               | GPIO4, pin 7 - PTT
 google:
   auth:
     keyPath: '/home/user/auth.json' # path to the auth key

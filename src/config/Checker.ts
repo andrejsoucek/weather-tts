@@ -5,7 +5,8 @@ const validate = require('yaml-schema-validator');
 export class Checker {
   private static readonly structure = {
     gpio: {
-      pin: { type: Number, required: true },
+      input: { type: Number, required: true },
+      output: { type: Number, required: true },
     },
     google: {
       auth: {

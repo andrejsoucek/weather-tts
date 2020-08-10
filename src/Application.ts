@@ -15,7 +15,9 @@ export class Application {
 
     private tries = 0;
 
-    private button: Gpio | undefined;
+    private trigger: Gpio | undefined;
+
+    private ptt: Gpio | undefined;
 
     private running = false;
 
@@ -35,28 +37,35 @@ export class Application {
 
     run(): void {
       Checker.check(this.config);
-      if (Gpio.accessible && process.argv[2] !== 'test') {
-        logger.info(`Running. Waiting for input on pin ${this.config.gpio.pin}`);
-        this.button = new Gpio(this.config.gpio.pin, 'in', 'both');
-        this.button.watch((err, value) => {
+      if (Gpio.accessible) {
+        logger.info(`Running. Waiting for input on GPIO ${this.config.gpio.input}`);
+        this.trigger = new Gpio(this.config.gpio.input, 'in', 'falling');
+        this.ptt = new Gpio(this.config.gpio.output, 'out', 'none', { debounceTimeout: 10 });
+        this.trigger.watch((err, value) => {
           logger.info(`Received signal: ${value}`);
           if (err) {
             logger.error(err);
           }
-          this.fetch(this.config);
+          this.talk(this.config);
+        });
+        process.on('SIGINT', () => {
+          if (this.ptt && this.trigger) {
+            this.ptt.unexport();
+            this.trigger.unexport();
+          }
         });
       } else {
         logger.info('GPIO not available. Press enter to pull the trigger.');
         process.stdin.on('data', () => {
-          this.fetch(this.config);
+          this.talk(this.config);
         });
       }
       this.running = true;
     }
 
     stop(): void {
-      if (this.button) {
-        this.button.unwatchAll();
+      if (this.trigger) {
+        this.trigger.unwatchAll();
       } else {
         process.stdin.removeAllListeners();
       }
@@ -64,7 +73,7 @@ export class Application {
       this.running = false;
     }
 
-    private async fetch(cfg: Config): Promise<void> {
+    private async talk(cfg: Config): Promise<void> {
       if (this.working) {
         return;
       }
@@ -73,19 +82,32 @@ export class Application {
         const response = await axios.get(cfg.realtime.url);
         const parser = new RealtimeParser();
         const weather = await parser.parse(response.data);
+        if (Gpio.accessible && this.ptt) {
+          this.ptt.writeSync(1);
+          logger.debug(`PTT start: GPIO value: ${this.ptt.readSync()}`);
+        }
         await this.synthesizeAndPlay(weather, cfg);
       } catch (err) {
         logger.error(err);
         this.working = false;
+        if (Gpio.accessible && this.ptt) {
+          this.ptt.writeSync(0);
+          logger.debug(`PTT stop: GPIO value: ${this.ptt.readSync()}`);
+        }
         // eslint-disable-next-line no-use-before-define
         this.tryAgain(cfg);
       } finally {
         this.working = false;
+        if (Gpio.accessible && this.ptt) {
+          this.ptt.writeSync(0);
+          logger.debug(`PTT stop: GPIO value: ${this.ptt.readSync()}`);
+        }
       }
     }
 
     private async synthesizeAndPlay(weather: Weather, cfg: Config): Promise<void> {
       const msg = Message.createFrom(weather, cfg.message);
+      logger.debug(msg);
       const output = path.join(__dirname, '..', 'output.mp3');
       await Synthesizer.synthesize(msg, output, cfg.google.tts.language);
       await Player.play(output);
@@ -93,12 +115,17 @@ export class Application {
     }
 
     private tryAgain(cfg: Config): void {
+      logger.info('Failed talk(). Trying again.');
       if (this.tries < 3) {
         this.tries += 1;
         setTimeout(() => {
-          this.fetch(cfg);
+          this.talk(cfg);
         }, 750);
       } else {
+        if (this.ptt && this.trigger) {
+          this.ptt.unexport();
+          this.trigger.unexport();
+        }
         process.exit();
       }
     }

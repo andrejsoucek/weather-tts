@@ -17,7 +17,8 @@ export interface Config {
 function createCfgFrom(values: any): Config {
   return {
     gpio: {
-      pin: parseInt(values.gpio, 10),
+      input: parseInt(values['gpio-input'], 10),
+      output: parseInt(values['gpio-output'], 10),
     },
     realtime: {
       url: values['realtime-url'],

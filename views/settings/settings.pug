@@ -25,10 +25,15 @@ block content
     form(method='POST' action='/save')
         div(data-tabs-content='general')
             div.field
-                label(for='gpio').label GPIO PIN Number:
+                label(for='gpio-input').label GPIO Input PIN Number:
                 div.control
-                    input#gpio.input(type='number', name='gpio', value=config.gpio.pin)
-                p.help Raspberry pin number which will trigger the TTS
+                    input#gpio-input.input(type='number', name='gpio-input', value=config.gpio.input)
+                p.help Raspberry GPIO pin number which will trigger the TTS
+            div.field
+                label(for='gpio-output').label GPIO Output PIN Number:
+                div.control
+                    input#gpio-output.input(type='number', name='gpio-output', value=config.gpio.output)
+                p.help Raspberry GPIO pin number which will handle the PTT
             div.field
                 label(for='realtime-url').label Realtime.txt URL:
                 div.control
