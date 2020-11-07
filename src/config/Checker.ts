@@ -9,9 +9,6 @@ export class Checker {
       output: { type: Number, required: true },
     },
     google: {
-      auth: {
-        keyPath: { type: String, required: true },
-      },
       tts: {
         language: { type: String, required: true },
       },

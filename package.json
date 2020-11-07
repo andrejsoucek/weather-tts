@@ -40,6 +40,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.21.2",
     "mocha": "^7.2.0",
+    "nodemon": "^2.0.6",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   },
@@ -47,8 +48,14 @@
     "build": "tsc",
     "postbuild": "rm -f build/config/config.yml && mkdir -p build/config && cp config/config.yml build/config/config.yml",
     "start": "node .",
+    "dev": "./node_modules/nodemon/bin/nodemon.js",
     "manual": "node . manual",
     "test": "mocha -r ts-node/register test/*.test.ts",
     "lint": "eslint --ext .ts src"
+  },
+  "nodemonConfig": {
+    "ext": "ts,pug",
+    "watch": ["src", "views", "test"],
+    "exec": "npm run build && npm run manual"
   }
 }

@@ -24,9 +24,6 @@ function createCfgFrom(values: any): Config {
       url: values['realtime-url'],
     },
     google: {
-      auth: {
-        keyPath: values['google-key'],
-      },
       tts: {
         language: values['google-language'],
       },

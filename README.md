@@ -6,19 +6,27 @@
 1. [mpg123](https://www.mpg123.de/) `apt-get install mpg123`
 
 ## Getting Started
-2. Clone this repo.
-2. Create config `cp config/config.example.yml config/config.yml`.
-2. Edit the config for your needs. You can use the web UI on localhost:5000 or edit the yaml directly.
-2. Compile by running `npm run build`.
-2. Launch by `npm run start`. The app will detect if the GPIO is accessible automatically.
-2. If you want to force disable the GPIO input trigger run `npm run manual`. The app will react only to the enter key.
-2. Tests can be run by `npm run test`
+### Using docker
+1. Clone this repo.
+1. Put your Google JSON auth key into the project root. Name it `auth.json`. To specify different directory set an ENV variable `GOOGLE_KEY_PATH`.
+1. Build the container by running `make build`.
+1. Start the container and launch the app by `make run`. The app will detect if the GPIO is accessible automatically.
+1. If you want to force disable the GPIO input trigger run `make run-dev`. The app will react only to the enter key.
+1. Tests can be run by `make test`. Lint by `make lint`
+### Local installation
+1. Clone this repo.
+1. Specify path to the Google JSON auth key into an ENV variable `GOOGLE_KEY_PATH`.
+1. Create config `cp config/config.example.yml config/config.yml`.
+1. Compile by running `npm run build`.
+1. Launch by `npm run start`. The app will detect if the GPIO is accessible automatically.
+1. If you want to force disable the GPIO input trigger run `npm run manual`. The app will react only to the enter key.
+1. Tests can be run by `npm run test`. Lint by `npm run lint`.
 
 ## Message template & placeholders
 You can use preddefined placeholders in the message:
 - <#TIME> - time in HH:MM format
 - <#WIND> - wind speed, bearing and gust
-- <#RWY>  - runway in use
+- <#RWY> - runway in use
 - <#CIRCUIT> - circuit direction
 - <#TEMP> - temperature
 - <#CLOUDBASE>
