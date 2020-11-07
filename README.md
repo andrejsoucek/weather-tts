@@ -9,9 +9,10 @@
 2. Clone this repo.
 2. Create config `cp config/config.example.yml config/config.yml`.
 2. Edit the config for your needs. You can use the web UI on localhost:5000 or edit the yaml directly.
-2. Compile `tsc`.
+2. Compile by running `npm run build`.
 2. Launch `node build/src/main.js` or `node .`. The app will detect if the GPIO is accessible automatically.
-2. If you want to force disable the GPIO input trigger run `node . test`. The app will react only to the enter key.
+2. If you want to force disable the GPIO input trigger run `npm run manual`. The app will react only to the enter key.
+2. Tests can be run by `npm run test`
 
 ## Message template & placeholders
 You can use preddefined placeholders in the message:

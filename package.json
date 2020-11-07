@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "Weather TTS service.",
   "main": "build/src/main.js",
-  "scripts": {
-    "test": "mocha -r ts-node/register test/*.test.ts",
-    "lint": "eslint --ext .ts src"
-  },
   "keywords": [
     "tts",
     "weather",
@@ -46,5 +42,13 @@
     "mocha": "^7.2.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "rm -f build/config/config.yml && mkdir -p build/config && cp config/config.yml build/config/config.yml",
+    "start": "node .",
+    "manual": "node . manual",
+    "test": "mocha -r ts-node/register test/*.test.ts",
+    "lint": "eslint --ext .ts src"
   }
 }

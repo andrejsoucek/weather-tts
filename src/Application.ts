@@ -21,7 +21,11 @@ export class Application {
 
     private running = false;
 
-    constructor(private config: Config) {}
+    private readonly gpioDisabled: boolean;
+
+    constructor(private config: Config) {
+      this.gpioDisabled = process.argv[2] !== 'manual';
+    }
 
     getConfig(): Config {
       return this.config;
@@ -37,7 +41,7 @@ export class Application {
 
     run(): void {
       Checker.check(this.config);
-      if (Gpio.accessible) {
+      if (Gpio.accessible && !this.gpioDisabled) {
         logger.info(`Running. Waiting for input on GPIO ${this.config.gpio.input}`);
         this.trigger = new Gpio(this.config.gpio.input, 'in', 'falling');
         this.ptt = new Gpio(this.config.gpio.output, 'out', 'none', { debounceTimeout: 10 });
@@ -55,7 +59,7 @@ export class Application {
           }
         });
       } else {
-        logger.info('GPIO not available. Press enter to pull the trigger.');
+        logger.info('GPIO not available or disabled. Press enter to pull the trigger.');
         process.stdin.on('data', () => {
           this.talk(this.config);
         });
@@ -82,7 +86,7 @@ export class Application {
         const response = await axios.get(cfg.realtime.url);
         const parser = new RealtimeParser();
         const weather = await parser.parse(response.data);
-        if (Gpio.accessible && this.ptt) {
+        if (Gpio.accessible && !this.gpioDisabled && this.ptt) {
           this.ptt.writeSync(1);
           logger.debug(`PTT start: GPIO value: ${this.ptt.readSync()}`);
         }
@@ -90,7 +94,7 @@ export class Application {
       } catch (err) {
         logger.error(err);
         this.working = false;
-        if (Gpio.accessible && this.ptt) {
+        if (Gpio.accessible && !this.gpioDisabled && this.ptt) {
           this.ptt.writeSync(0);
           logger.debug(`PTT stop: GPIO value: ${this.ptt.readSync()}`);
         }
@@ -98,7 +102,7 @@ export class Application {
         this.tryAgain(cfg);
       } finally {
         this.working = false;
-        if (Gpio.accessible && this.ptt) {
+        if (Gpio.accessible && !this.gpioDisabled && this.ptt) {
           this.ptt.writeSync(0);
           logger.debug(`PTT stop: GPIO value: ${this.ptt.readSync()}`);
         }
