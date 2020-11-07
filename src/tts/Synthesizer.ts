@@ -9,7 +9,7 @@ export class Synthesizer {
       input: { text },
       voice: { languageCode: language },
       audioConfig: { audioEncoding: 'MP3' },
-    } as google.cloud.texttospeech.v1beta1.ISynthesizeSpeechRequest;
+    } as google.cloud.texttospeech.v1.ISynthesizeSpeechRequest;
     const request = google.cloud.texttospeech.v1.SynthesizeSpeechRequest.create(properties);
 
     const response = await GoogleTTSClient.getInstance().synthesizeSpeech(request);
