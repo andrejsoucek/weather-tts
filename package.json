@@ -55,7 +55,11 @@
   },
   "nodemonConfig": {
     "ext": "ts,pug",
-    "watch": ["src", "views", "test"],
+    "watch": [
+      "src",
+      "views",
+      "test"
+    ],
     "exec": "npm run build && npm run manual"
   }
 }
