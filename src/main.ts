@@ -10,11 +10,18 @@ import { SettingsController } from './website/SettingsController';
 import { StartController } from './website/StartController';
 import { StopController } from './website/StopController';
 import { DashboardController } from './website/DashboardController';
+import { Repository } from './persistence/Repository';
+import { logger } from './logger/Logger';
 
 // eslint-disable-next-line no-console
 console.log(figlet.textSync('Weather TTS', 'Mini'));
 // eslint-disable-next-line no-console
 console.log('==========================================');
+
+Repository.runMigrations()
+  .then(() => {
+    logger.debug('DB Migrations finished successfully');
+  });
 
 const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'config.yml'), 'utf8'));
 

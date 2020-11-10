@@ -4,3 +4,4 @@ output.mp3
 build
 *.log
 auth.json
+db.sqlite

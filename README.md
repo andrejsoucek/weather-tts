@@ -15,7 +15,7 @@
 1. Tests can be run by `make test`. Lint by `make lint`
 ### Local installation
 1. Clone this repo.
-1. Specify path to the Google JSON auth key into an ENV variable `GOOGLE_KEY_PATH`.
+1. Specify path to the Google JSON auth key into an ENV variable `GOOGLE_APPLICATION_CREDENTIALS`.
 1. Create config `cp config/config.example.yml config/config.yml`.
 1. Compile by running `npm run build`.
 1. Launch by `npm run start`. The app will detect if the GPIO is accessible automatically.

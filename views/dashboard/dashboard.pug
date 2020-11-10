@@ -8,20 +8,23 @@ block content
             div.level-item.has-text-centered
                 div
                     p.heading Messages created
-                    p.title 3,456
+                    p.title #{messageStats.totalMessages}
             div.level-item.has-text-centered
                 div
-                    p.heading Daily
-                    p.title 123
+                    p.heading Total messages length
+                    p.title #{messageStats.totalCharacters}
             div.level-item.has-text-centered
                 div
-                    p.heading Overall messages length
-                    p.title 456K
+                    p.heading Average messages/day
+                    p.title #{messageStats.messagesPerDayAvg}
             div.level-item.has-text-centered
                 div
-                    p.heading Errors
-                    p.title 0
+                    p.heading Max messages/day
+                    p.title #{messageStats.messagesPerDayMax}
 
     div.box
-        div.columns.is-centered.pt-4.pb-4
-            img(src='https://via.placeholder.com/700x450' alt='placeholder')
+        div.columns.is-centered.pt-4.pb-4(style={height: '450px'})
+            canvas#chart-usage
+
+    include ./chart.pug
+

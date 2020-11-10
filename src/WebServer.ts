@@ -23,6 +23,12 @@ export class WebServer {
       this.app.use('/bulma', express.static(
         path.join(__dirname, '..', '..', 'node_modules', 'bulma', 'css'),
       ));
+      this.app.use('/chartjs', express.static(
+        path.join(__dirname, '..', '..', 'node_modules', 'chart.js', 'dist'),
+      ));
+      this.app.use('/chartjs-datalabels', express.static(
+        path.join(__dirname, '..', '..', 'node_modules', 'chartjs-plugin-datalabels', 'dist'),
+      ));
       this.app.use('/fa', express.static(
         path.join(__dirname, '..', '..', 'node_modules', '@fortawesome', 'fontawesome-free', 'js'),
       ));

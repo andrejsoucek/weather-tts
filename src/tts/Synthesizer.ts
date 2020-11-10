@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as util from 'util';
 import { google } from '@google-cloud/text-to-speech/build/protos/protos';
 import { GoogleTTSClient } from './GoogleTTSClient';
+import { Repository } from '../persistence/Repository';
 
 export class Synthesizer {
   static async synthesize(text: string, outputPath: string, language: string): Promise<void> {
@@ -11,8 +12,10 @@ export class Synthesizer {
       audioConfig: { audioEncoding: 'MP3' },
     } as google.cloud.texttospeech.v1.ISynthesizeSpeechRequest;
     const request = google.cloud.texttospeech.v1.SynthesizeSpeechRequest.create(properties);
-
     const response = await GoogleTTSClient.getInstance().synthesizeSpeech(request);
+
+    await Repository.saveMessageStats(text.length);
+
     const writeFile = util.promisify(fs.writeFile);
     const audio = response[0];
     if (audio && audio.audioContent) {
