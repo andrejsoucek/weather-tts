@@ -46,7 +46,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "postbuild": "rm -f build/config/config.yml && mkdir -p build/config && cp config/config.yml build/config/config.yml",
+    "postbuild": "mkdir -p build/config && ln -sf ../../config/config.yml build/config/config.yml",
     "start": "node .",
     "dev": "./node_modules/nodemon/bin/nodemon.js",
     "manual": "node . manual",

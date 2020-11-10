@@ -18,20 +18,27 @@ build-app: ## Build the application inside the container
 	docker exec -ti weather-tts npm run build
 
 run: ## Runs the container
+	cp -n config/config.example.yml config/config.yml
 	xdg-open http://localhost:5000 || open https://localhost:5000 || true && \
 	docker run --rm -ti \
-	-p 5000:5000 \
-	--name weather-tts \
-	--mount source=$(GOOGLE_KEY_PATH),type=bind,target=/usr/src/app/auth.json \
 	--device /dev/snd \
+	--mount source=$(GOOGLE_KEY_PATH),type=bind,target=/usr/src/app/auth.json \
+	--name weather-tts \
+	--publish 5000:5000 \
+	--volume $(ROOT_DIR)/config/config.yml:/usr/src/app/config/config.yml \
 	weather-tts
 
 run-dev: ## Runs the container with hot reload
+	cp -n config/config.example.yml config/config.yml
 	docker run --rm -ti \
-	-p 5000:5000 \
-	--name weather-tts \
-	--mount source=$(GOOGLE_KEY_PATH),type=bind,target=/usr/src/app/auth.json \
 	--device /dev/snd \
+	--mount source=$(GOOGLE_KEY_PATH),type=bind,target=/usr/src/app/auth.json \
+	--name weather-tts \
+	--publish 5000:5000 \
+	--volume $(ROOT_DIR)/config/config.yml:/usr/src/app/config/config.yml \
+	--volume $(ROOT_DIR)/src:/usr/src/app/src \
+	--volume $(ROOT_DIR)/test:/usr/src/app/test \
+	--volume $(ROOT_DIR)/views:/usr/src/app/views \
 	weather-tts \
 	npm run dev
 
