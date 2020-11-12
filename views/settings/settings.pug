@@ -2,8 +2,7 @@ extends ../@main.pug
 block active
     -var selected = 'settings'
 block content
-    h1.is-size-1 Settings
-    div.buttons
+    div.buttons.is-right
         if appRunning
             a(href='/stop').button.is-danger
                 span.icon

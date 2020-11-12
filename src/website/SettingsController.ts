@@ -34,7 +34,7 @@ export class SettingsController {
       this.app.stop();
       this.app.setConfig(cfg);
       this.app.run();
-      response.redirect('/');
+      response.redirect('/settings');
     };
 
     getTzs = (): Array<Option> => {

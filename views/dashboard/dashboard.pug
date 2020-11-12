@@ -2,7 +2,6 @@ extends ../@main.pug
 block active
     -var selected = 'dashboard'
 block content
-    h1.is-size-1 Dashboard
     div.box.mt-5
         nav.level
             div.level-item.has-text-centered
@@ -23,6 +22,8 @@ block content
                     p.title #{messageStats.messagesPerDayMax}
 
     div.box
+        div.columns.is-centered.pt-4.pb-4
+            p.heading Daily usage
         div.columns.is-centered.pt-4.pb-4(style={height: '450px'})
             canvas#chart-usage
 
