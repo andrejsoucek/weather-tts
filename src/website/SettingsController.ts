@@ -9,7 +9,7 @@ export class SettingsController {
 
     public router = Router();
 
-    constructor(private readonly app: Application) {
+    constructor(private app: Application) {
       this.router.get(this.path, this.render);
       this.router.post('/save', this.save);
     }

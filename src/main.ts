@@ -12,6 +12,9 @@ import { StopController } from './website/StopController';
 import { DashboardController } from './website/DashboardController';
 import { Repository } from './persistence/Repository';
 import { logger } from './logger/Logger';
+import { WeatherProvider } from './weather/WeatherProvider';
+import { RealtimeParser } from './weather/RealtimeParser';
+import { TriggerFactory } from './trigger/TriggerFactory';
 
 // eslint-disable-next-line no-console
 console.log(figlet.textSync('Weather TTS', 'Mini'));
@@ -25,7 +28,12 @@ Repository.runMigrations()
 
 const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'config.yml'), 'utf8'));
 
-const app = new Application(config);
+const wp = new WeatherProvider(new RealtimeParser());
+const tf = new TriggerFactory(wp);
+const app = new Application(
+  tf,
+  config,
+);
 app.run();
 
 const web = new WebServer([

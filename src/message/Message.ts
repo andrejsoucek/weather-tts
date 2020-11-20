@@ -1,4 +1,4 @@
-import { Weather } from '../parser/Weather';
+import { Weather } from '../weather/Weather';
 import { Operation } from './Operation';
 import { MessageConfig } from '../config/MessageConfig';
 import { TextCondition } from '../config/TextCondition';

@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import path from 'path';
 import { describe, it } from 'mocha';
 import { Message } from '../src/message/Message';
-import { Weather } from '../src/parser/Weather';
+import { Weather } from '../src/weather/Weather';
 import { Config } from '../src/config/Config';
 
 const cfg = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, 'config.yml'), 'utf8'));
