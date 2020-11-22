@@ -21,9 +21,11 @@
     "chartjs-plugin-datalabels": "^0.7.0",
     "express": "^4.17.1",
     "figlet": "^1.4.0",
+    "inversify": "^5.0.1",
     "onoff": "^6.0.0",
     "play-sound": "^1.1.3",
     "pug": "^3.0.0",
+    "reflect-metadata": "^0.1.13",
     "sqlite": "^4.0.15",
     "sqlite3": "^5.0.0",
     "winston": "^3.3.3",
@@ -50,8 +52,8 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
+    "prebuild": "mkdir -p build/config && ln -sf ../../config/config.yml build/config/config.yml",
     "build": "tsc",
-    "postbuild": "mkdir -p build/config && ln -sf ../../config/config.yml build/config/config.yml",
     "start": "node .",
     "dev": "./node_modules/nodemon/bin/nodemon.js",
     "manual": "node . manual",
