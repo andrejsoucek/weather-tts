@@ -1,15 +1,20 @@
 import { Request, Response, Router } from 'express';
+import { inject, injectable } from 'inversify';
 import { Option } from './Option';
 import { Comparators } from '../message/Comparators';
 import { Application } from '../Application';
 import { saveConfig } from '../config/Config';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
+@injectable()
 export class SettingsController {
     public path = '/settings';
 
     public router = Router();
 
-    constructor(private app: Application) {
+    constructor(
+        @inject(INVERSIFY_TYPES.Application) private readonly app: Application,
+    ) {
       this.router.get(this.path, this.render);
       this.router.post('/save', this.save);
     }

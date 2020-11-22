@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import { Weather } from './Weather';
 import { Parser } from './Parser';
 
+@injectable()
 export class RealtimeParser implements Parser {
     private readonly structure: Map<string, number> = new Map([
       ['date', 0],

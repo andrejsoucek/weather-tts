@@ -15,7 +15,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "types": ["node", "mocha"],
+    "types": ["node", "mocha", "reflect-metadata"],
     "allowJs": true,
     "baseUrl": "./",
     "paths": {

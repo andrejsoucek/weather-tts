@@ -1,19 +1,19 @@
+import { inject, injectable } from 'inversify';
 import { Config } from './config/Config';
 import { Checker } from './config/Checker';
 import { logger } from './logger/Logger';
 import { Trigger } from './trigger/Trigger';
-import { TriggerFactory } from './trigger/TriggerFactory';
+import { INVERSIFY_TYPES } from './inversify.types';
+import { container } from './inversify.container';
 
+@injectable()
 export class Application {
     private running = false;
 
-    private trigger: Trigger;
-
     constructor(
-        private triggerFactory: TriggerFactory,
-        private config: Config,
+        @inject(INVERSIFY_TYPES.Trigger) private trigger: Trigger,
+        @inject(INVERSIFY_TYPES.Config) private config: Config,
     ) {
-      this.trigger = this.triggerFactory.createTrigger(config.gpio);
     }
 
     getConfig(): Config {
@@ -21,8 +21,9 @@ export class Application {
     }
 
     setConfig(cfg: Config): void {
+      container.rebind<Config>(INVERSIFY_TYPES.Config).toConstantValue(cfg);
       this.config = cfg;
-      this.trigger = this.triggerFactory.createTrigger(cfg.gpio);
+      this.trigger.unlisten();
     }
 
     isRunning(): boolean {

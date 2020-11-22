@@ -1,20 +1,11 @@
-import path from 'path';
-import YAML from 'yaml';
-import * as fs from 'fs';
+import 'reflect-metadata';
 import figlet from 'figlet';
-import bodyParser from 'body-parser';
-import { Config } from './config/Config';
 import { Application } from './Application';
 import { WebServer } from './WebServer';
-import { SettingsController } from './website/SettingsController';
-import { StartController } from './website/StartController';
-import { StopController } from './website/StopController';
-import { DashboardController } from './website/DashboardController';
 import { Repository } from './persistence/Repository';
 import { logger } from './logger/Logger';
-import { WeatherProvider } from './weather/WeatherProvider';
-import { RealtimeParser } from './weather/RealtimeParser';
-import { TriggerFactory } from './trigger/TriggerFactory';
+import { container } from './inversify.container';
+import { INVERSIFY_TYPES } from './inversify.types';
 
 // eslint-disable-next-line no-console
 console.log(figlet.textSync('Weather TTS', 'Mini'));
@@ -26,22 +17,8 @@ Repository.runMigrations()
     logger.debug('DB Migrations finished successfully');
   });
 
-const config = <Config>YAML.parse(fs.readFileSync(path.join(__dirname, '..', 'config', 'config.yml'), 'utf8'));
-
-const wp = new WeatherProvider(new RealtimeParser());
-const tf = new TriggerFactory(wp);
-const app = new Application(
-  tf,
-  config,
-);
+const app = container.get<Application>(INVERSIFY_TYPES.Application);
 app.run();
 
-const web = new WebServer([
-  bodyParser.urlencoded({ extended: true }),
-], [
-  new DashboardController(),
-  new SettingsController(app),
-  new StartController(app),
-  new StopController(app),
-], 5000);
+const web = container.get<WebServer>(INVERSIFY_TYPES.WebServer);
 web.listen();

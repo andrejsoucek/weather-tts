@@ -1,9 +1,14 @@
 import axios from 'axios';
+import { inject, injectable } from 'inversify';
 import { Weather } from './Weather';
 import { Parser } from './Parser';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
+@injectable()
 export class WeatherProvider {
-  public constructor(private readonly parser: Parser) {
+  public constructor(
+      @inject(INVERSIFY_TYPES.Parser) private readonly parser: Parser,
+  ) {
   }
 
   async getCurrentWeather(url: string): Promise<Weather> {

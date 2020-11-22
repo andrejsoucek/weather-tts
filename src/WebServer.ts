@@ -1,11 +1,18 @@
 import express from 'express';
 import path from 'path';
+import { inject, injectable } from 'inversify';
 import { logger } from './logger/Logger';
+import { INVERSIFY_TYPES } from './inversify.types';
 
+@injectable()
 export class WebServer {
     private readonly app: express.Application;
 
-    constructor(middlewares: Array<any>, controllers: Array<any>, private readonly port: number) {
+    constructor(
+      @inject(INVERSIFY_TYPES.Middlewares) middlewares: Array<any>,
+      @inject(INVERSIFY_TYPES.Controllers) controllers: Array<any>,
+      @inject(INVERSIFY_TYPES.WebserverPort) private readonly port: number,
+    ) {
       this.app = express();
       this.initializeStaticContent();
       this.initializeMiddlewares(middlewares);

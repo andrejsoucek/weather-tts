@@ -1,9 +1,12 @@
+import { inject, injectable } from 'inversify';
 import { WeatherProvider } from '../weather/WeatherProvider';
 import { Config } from '../config/Config';
 import { logger } from '../logger/Logger';
 import { Synthesizer } from '../tts/Synthesizer';
 import { Trigger } from './Trigger';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
+@injectable()
 export class ManualTrigger implements Trigger {
     private working = false;
 
@@ -12,7 +15,7 @@ export class ManualTrigger implements Trigger {
     private stdinListener: NodeJS.ReadStream | undefined;
 
     constructor(
-        private readonly weatherProvider: WeatherProvider,
+        @inject(INVERSIFY_TYPES.WeatherProvider) private readonly weatherProvider: WeatherProvider,
     ) {
     }
 

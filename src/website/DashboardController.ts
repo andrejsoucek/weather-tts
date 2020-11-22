@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
+import { injectable } from 'inversify';
 import { Repository } from '../persistence/Repository';
 
+@injectable()
 export class DashboardController {
     public path = '/';
 

@@ -1,19 +1,22 @@
 import { Gpio } from 'onoff';
+import { inject, injectable } from 'inversify';
 import { WeatherProvider } from '../weather/WeatherProvider';
 import { logger } from '../logger/Logger';
 import { Config } from '../config/Config';
 import { Synthesizer } from '../tts/Synthesizer';
 import { Trigger } from './Trigger';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
+@injectable()
 export class GPIOTrigger implements Trigger {
   private working = false;
 
   private tries = 0;
 
   constructor(
-      private readonly weatherProvider: WeatherProvider,
-      private readonly trigger: Gpio,
-      private readonly ptt: Gpio,
+      @inject(INVERSIFY_TYPES.WeatherProvider) private readonly weatherProvider: WeatherProvider,
+      @inject(INVERSIFY_TYPES.GpioInput) private readonly trigger: Gpio,
+      @inject(INVERSIFY_TYPES.GpioOutput) private readonly ptt: Gpio,
   ) {
     process.on('SIGINT', () => {
       this.ptt.unexport();
