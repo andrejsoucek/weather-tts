@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Repository } from '../persistence/Repository';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
 @injectable()
 export class DashboardController {
@@ -8,13 +9,15 @@ export class DashboardController {
 
     public router = Router();
 
-    constructor() {
+    constructor(
+        @inject(INVERSIFY_TYPES.Repository) private readonly repository: Repository,
+    ) {
       this.router.get(this.path, this.render);
     }
 
     render = async (_: Request, response: Response): Promise<void> => {
-      const messageStats = await Repository.getMessageStats();
-      const chartDataResult = await Repository.getMessageChartData();
+      const messageStats = await this.repository.getMessageStats();
+      const chartDataResult = await this.repository.getMessageChartData();
 
       const chartLabels = <Array<string>>[];
       const chartValues = <Array<number>>[];

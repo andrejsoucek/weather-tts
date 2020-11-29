@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import bodyParser from 'body-parser';
 import { Gpio } from 'onoff';
+import { open, Database } from 'sqlite';
+import sqlite3 from 'sqlite3';
 import { INVERSIFY_TYPES } from './inversify.types';
 import { Config } from './config/Config';
 import { RealtimeParser } from './weather/RealtimeParser';
@@ -19,6 +21,12 @@ import { Trigger } from './trigger/Trigger';
 import { logger } from './logger/Logger';
 import { ManualTrigger } from './trigger/ManualTrigger';
 import { GPIOTrigger } from './trigger/GPIOTrigger';
+import { Repository } from './persistence/Repository';
+import { Player } from './tts/Player';
+import { Synthesizer } from './tts/Synthesizer';
+import { PlaysoundPlayer } from './tts/PlaysoundPlayer';
+
+const playsoundPlayer = require('play-sound')({ player: 'mpg123' });
 
 const container = new Container();
 
@@ -67,5 +75,13 @@ container.bind<Array<any>>(INVERSIFY_TYPES.Controllers).toDynamicValue((context:
   context.container.get(INVERSIFY_TYPES.StopController),
 ]);
 container.bind<WebServer>(INVERSIFY_TYPES.WebServer).to(WebServer);
+container.bind<Repository>(INVERSIFY_TYPES.Repository).to(Repository);
+container.bind<Player>(INVERSIFY_TYPES.Player).to(Player);
+container.bind<Synthesizer>(INVERSIFY_TYPES.Synthesizer).to(Synthesizer);
+container.bind<PlaysoundPlayer>(INVERSIFY_TYPES.PlaysoundPlayer).toConstantValue(playsoundPlayer);
+container.bind<Promise<Database>>(INVERSIFY_TYPES.Database).toDynamicValue(async () => open<sqlite3.Database, sqlite3.Statement>({
+  filename: 'db.sqlite',
+  driver: sqlite3.Database,
+}));
 
 export { container };

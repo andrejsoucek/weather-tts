@@ -16,6 +16,7 @@ export class ManualTrigger implements Trigger {
 
     constructor(
         @inject(INVERSIFY_TYPES.WeatherProvider) private readonly weatherProvider: WeatherProvider,
+        @inject(INVERSIFY_TYPES.Synthesizer) private readonly synthesizer: Synthesizer,
     ) {
     }
 
@@ -39,7 +40,7 @@ export class ManualTrigger implements Trigger {
       this.working = true;
       try {
         const weather = await this.weatherProvider.getCurrentWeather(config.realtime.url);
-        await Synthesizer.synthesizeAndPlay(weather, config);
+        await this.synthesizer.synthesizeAndPlay(weather, config);
         this.tries = 0;
       } catch (err) {
         logger.error(err);

@@ -14,6 +14,11 @@ const INVERSIFY_TYPES = {
   Trigger: Symbol.for('Trigger'),
   WeatherProvider: Symbol.for('WeatherProvider'),
   WebServer: Symbol.for('WebServer'),
+  Repository: Symbol.for('Repository'),
+  Synthesizer: Symbol.for('Synthesizer'),
+  Player: Symbol.for('Player'),
+  PlaysoundPlayer: Symbol.for('PlaysoundPlayer'),
+  Database: Symbol.for('Database'),
 };
 
 export { INVERSIFY_TYPES };

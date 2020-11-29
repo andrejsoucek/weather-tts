@@ -1,24 +1,26 @@
-import sqlite3 from 'sqlite3';
-import { Database, open } from 'sqlite';
+import { Database } from 'sqlite';
+import { inject, injectable } from 'inversify';
+import { INVERSIFY_TYPES } from '../inversify.types';
 
+@injectable()
 export class Repository {
-  private static DAY_SECONDS = 86400;
+  private readonly DAY_SECONDS = 86400;
 
-  private static connection = open<sqlite3.Database, sqlite3.Statement>({
-    filename: 'db.sqlite',
-    driver: sqlite3.Database,
-  });
+  constructor(
+      @inject(INVERSIFY_TYPES.Database) private readonly connection: Promise<Database>,
+  ) {
+  }
 
-  public static async runMigrations(): Promise<void> {
-    const c = await Repository.connection;
+  public async runMigrations(): Promise<void> {
+    const c = await this.connection;
 
     return c.migrate({
       force: false,
     });
   }
 
-  public static async saveMessageStats(messageLength: number): Promise<void> {
-    const c = await Repository.connection;
+  public async saveMessageStats(messageLength: number): Promise<void> {
+    const c = await this.connection;
     await this.fillMissingDays(c);
 
     await c.run(
@@ -38,8 +40,8 @@ export class Repository {
     );
   }
 
-  public static async getMessageStats(): Promise<MessageStats|undefined> {
-    const c = await Repository.connection;
+  public async getMessageStats(): Promise<MessageStats|undefined> {
+    const c = await this.connection;
     await this.fillMissingDays(c);
 
     return c.get(
@@ -52,8 +54,8 @@ export class Repository {
     );
   }
 
-  public static async getMessageChartData(): Promise<Array<MessageChartData>> {
-    const c = await Repository.connection;
+  public async getMessageChartData(): Promise<Array<MessageChartData>> {
+    const c = await this.connection;
     await this.fillMissingDays(c);
 
     return c.all(
@@ -66,7 +68,7 @@ export class Repository {
     );
   }
 
-  public static async fillMissingDays(c: Database): Promise<void> {
+  private async fillMissingDays(c: Database): Promise<void> {
     const lastTimestampRow = await c.get(
       'SELECT day_timestamp FROM messages ORDER BY day_timestamp DESC LIMIT 1',
     );
@@ -82,10 +84,10 @@ export class Repository {
     }
   }
 
-  private static dayTimestamp(): number {
+  private dayTimestamp = (): number => {
     const date = new Date();
     date.setHours(0, 0, 0, 0);
 
     return date.getTime() / 1000;
-  }
+  };
 }

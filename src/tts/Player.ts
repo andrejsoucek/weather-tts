@@ -1,9 +1,17 @@
-const player = require('play-sound')({ player: 'mpg123' });
+import { inject, injectable } from 'inversify';
+import { INVERSIFY_TYPES } from '../inversify.types';
+import { PlaysoundPlayer } from './PlaysoundPlayer';
 
+@injectable()
 export class Player {
-  static play(path: string): Promise<void> {
+  constructor(
+      @inject(INVERSIFY_TYPES.PlaysoundPlayer) private readonly player: PlaysoundPlayer,
+  ) {
+  }
+
+  public play(path: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      player.play(path, (err: Error) => {
+      this.player.play(path, (err: Error) => {
         if (err) {
           reject(err);
         }

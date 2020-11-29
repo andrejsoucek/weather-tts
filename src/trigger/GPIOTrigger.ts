@@ -15,6 +15,7 @@ export class GPIOTrigger implements Trigger {
 
   constructor(
       @inject(INVERSIFY_TYPES.WeatherProvider) private readonly weatherProvider: WeatherProvider,
+      @inject(INVERSIFY_TYPES.Synthesizer) private readonly synthesizer: Synthesizer,
       @inject(INVERSIFY_TYPES.GpioInput) private readonly trigger: Gpio,
       @inject(INVERSIFY_TYPES.GpioOutput) private readonly ptt: Gpio,
   ) {
@@ -48,7 +49,7 @@ export class GPIOTrigger implements Trigger {
       const weather = await this.weatherProvider.getCurrentWeather(config.realtime.url);
       this.ptt.writeSync(1);
       logger.debug(`PTT start: GPIO value: ${this.ptt.readSync()}`);
-      await Synthesizer.synthesizeAndPlay(weather, config);
+      await this.synthesizer.synthesizeAndPlay(weather, config);
       this.tries = 0;
     } catch (err) {
       logger.error(err);

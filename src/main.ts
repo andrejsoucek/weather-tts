@@ -12,7 +12,8 @@ console.log(figlet.textSync('Weather TTS', 'Mini'));
 // eslint-disable-next-line no-console
 console.log('==========================================');
 
-Repository.runMigrations()
+const repository = container.get<Repository>(INVERSIFY_TYPES.Repository);
+repository.runMigrations()
   .then(() => {
     logger.debug('DB Migrations finished successfully');
   });
