@@ -1,3 +1,4 @@
+![master branch status](https://github.com/andrejsoucek/weather-tts/workflows/tests%20&%20lint/badge.svg?branch=master)
 # Weather Text-to-Speech
 ## Prerequisites
 1. [realtime.txt](https://cumuluswiki.org/a/Realtime.txt) output from a weather station (produced by Cumulus, CumulusMX or WeeWX).
