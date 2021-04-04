@@ -11,15 +11,18 @@ endif
 ##@ Targets
 .PHONY: check-env build build-app run run-dev lint test help
 
-build: ## Build the image
-	docker build -t weather-tts .
-
-build-app: ## Build the application inside the container
-	docker exec -ti weather-tts npm run build
-
-run: ## Runs the container
-	cp -n config/config.example.yml config/config.yml
+prep:
+	@mkdir -p node_modules vendor
 	touch db.sqlite
+	cp -n config/config.example.yml config/config.yml
+
+build-dev: prep ## Build the dev image
+	docker build -t weather-tts --target develop .
+
+build-prod: prep ## Build the prod image
+	docker build -t weather-tts --target production .
+
+run: build-prod ## Runs the container
 	xdg-open http://localhost:5000 || open https://localhost:5000 || true && \
 	docker run --rm -ti \
 	--device /dev/snd \
@@ -30,9 +33,7 @@ run: ## Runs the container
 	--volume $(ROOT_DIR)/db.sqlite:/usr/src/app/db.sqlite \
 	weather-tts
 
-run-dev: ## Runs the container with hot reload
-	cp -n config/config.example.yml config/config.yml
-	touch db.sqlite
+run-dev: build-dev ## Runs the container with hot reload
 	docker run --rm -ti \
 	--device /dev/snd \
 	--mount source=$(GOOGLE_KEY_PATH),type=bind,target=/usr/src/app/auth.json \
@@ -43,8 +44,8 @@ run-dev: ## Runs the container with hot reload
 	--volume $(ROOT_DIR)/src:/usr/src/app/src \
 	--volume $(ROOT_DIR)/test:/usr/src/app/test \
 	--volume $(ROOT_DIR)/views:/usr/src/app/views \
-	weather-tts \
-	npm run dev
+	--volume $(ROOT_DIR)/node_modules:/usr/src/app/node_modules \
+	weather-tts
 
 lint: ## Runs eslint
 	docker run --rm -e \
