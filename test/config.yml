@@ -1,6 +1,6 @@
 message:
   template: 'Milovice Rádio dobrý den. Čas <#TIME>. Vítr <#WIND>. Dráha v používání <#RWY>. Okruhy <#CIRCUIT>. Teplota <#TEMP>. Základna oblačnosti <#CLOUDBASE>. QNH <#QNH>.'
-  timezoneOffset: '+2'
+  timezone: 'Europe/Prague'
   wind:
     calm: 'klid'
     speedUnits: 'uzlů'

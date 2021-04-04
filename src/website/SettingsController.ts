@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { inject, injectable } from 'inversify';
+import moment from 'moment-timezone';
 import { Option } from './Option';
 import { Comparators } from '../message/Comparators';
 import { Application } from '../Application';
@@ -42,20 +43,7 @@ export class SettingsController {
       response.redirect('/settings');
     };
 
-    getTzs = (): Array<Option> => {
-      const out = [];
-      for (let i = -12; i <= 12; i += 1) {
-        const label = i < 0 ? i.toString() : `+${i}`;
-        const obj = {
-          id: label,
-          label,
-          selected: this.app.getConfig().message.timezoneOffset === label,
-        };
-        out.push(obj);
-      }
-
-      return out;
-    };
+    getTzs = (): Array<string> => moment.tz.names();
 
     getLanguages = (): Array<Option> => {
       const langs = [

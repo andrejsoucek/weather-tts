@@ -3,7 +3,7 @@ import { UnitsConfig } from './UnitsConfig';
 
 export interface MessageConfig {
     template: string;
-    timezoneOffset: string|undefined;
+    timezone: string;
     wind: {
         calm: string;
         speedUnits: string;

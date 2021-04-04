@@ -29,7 +29,7 @@ function createCfgFrom(values: any): Config {
       },
     },
     message: {
-      timezoneOffset: values['message-timezone-offset'],
+      timezone: values['message-timezone'],
       template: values['message-template'],
       wind: {
         calm: values['message-wind-calm'],

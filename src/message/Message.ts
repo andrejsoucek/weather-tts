@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import { Weather } from '../weather/Weather';
 import { Operation } from './Operation';
 import { MessageConfig } from '../config/MessageConfig';
@@ -17,7 +18,7 @@ export class Message {
       const { template } = cfg;
 
       return template
-        .replace('<#TIME>', this.formatTime(weather.time, cfg.timezoneOffset))
+        .replace('<#TIME>', this.formatTime(weather.time, weather.date, cfg.timezone))
         .replace('<#WIND>', this.formatWind(weather.wspeed, weather.wgust, weather.bearing, cfg.wind))
         .replace('<#RWY>', this.formatRwy(weather.bearing, cfg.rwy))
         .replace('<#CIRCUIT>', this.formatCircuit(weather.bearing, cfg.circuits))
@@ -26,11 +27,11 @@ export class Message {
         .replace('<#QNH>', this.formatQnh(weather.press));
     }
 
-    private static formatTime(time: string, tzOffset = '0'): string {
-      const split = time.split(':');
-      const hours = parseInt(split[0], 10) - parseInt(tzOffset, 10);
+    private static formatTime(time: string, date: string, tz: string): string {
+      const dateTime = moment(`${date} ${time}`, 'DD/MM/YYYY hh:mm:ss').format('YYYY-MM-DD HH:mm');
+      const utcTime = moment.tz(dateTime, tz).tz('UTC');
 
-      return `${hours} ${split[1]} UTC`;
+      return `${utcTime.format('HH mm')} UTC`;
     }
 
     private static formatWind(

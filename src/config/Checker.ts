@@ -18,7 +18,7 @@ export class Checker {
     },
     message: {
       template: { type: String, required: true },
-      timezoneOffset: { type: String, required: false },
+      timezone: { type: String, required: true },
       wind: {
         calm: { type: String, required: true },
         speedUnits: { type: String, required: true },

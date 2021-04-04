@@ -8,7 +8,7 @@ realtime:
   url: 'http://my.meteo/realtime.txt' # URL to get the weather from
 message:
   template: 'Milovice rádio dobrý den. Čas <#TIME>. Vítr <#WIND>. Dráha v používání <#RWY>. Okruhy <#CIRCUIT>. Teplota <#TEMP>. Základna oblačnosti <#CLOUDBASE>. QNH <#QNH>.'
-  timezoneOffset: '+2' # means the time from realtime.txt is UTC+2 (2 hours will be subtracted to get the UTC time), use '0' if no change needed
+  timezone: 'UTC' # means the time from realtime.txt is in UTC (other values will be used to convert the time to UTC)
   wind:
     calm: 'klid' # Wind calm.
     speedUnits: 'uzlů' # Wind speed units

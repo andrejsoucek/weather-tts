@@ -77,13 +77,14 @@ block content
                     strong <#QNH>
             h2.is-size-3 Time
             div.field
-                label(for='message-timezone-offset').label Timezone offset:
+                label(for='message-timezone').label Message Timezone:
                 div.control
                     div.select
-                        select#message-timezone-offset(name='message-timezone-offset')
+                        input#message-timezone.input(list="timezones" name='message-timezone', value=config.message.timezone, placeholder='Start typing')
+                        datalist#timezones
                             each tz in tzs
-                                option(value=tz.id, selected=tz.selected) #{tz.label}
-                p.help Time difference from the realtime.txt, use '0' if no change needed
+                                option(value=tz)
+                p.help Time from the realtime.txt will be converted to the UTC using this timezone
             h2.is-size-3 Wind
             div.field
                 label(for='message-wind-calm').label Wind calm:
