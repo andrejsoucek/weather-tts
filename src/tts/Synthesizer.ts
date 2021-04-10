@@ -28,16 +28,18 @@ export class Synthesizer {
     await this.player.play(output);
   }
 
-  private async synthesize(text: string, outputPath: string, language: string): Promise<void> {
+  private async synthesize(ssml: string, outputPath: string, language: string): Promise<void> {
     const properties = {
-      input: { text },
+      input: { ssml },
       voice: { languageCode: language },
       audioConfig: { audioEncoding: 'MP3' },
     } as google.cloud.texttospeech.v1.ISynthesizeSpeechRequest;
     const request = google.cloud.texttospeech.v1.SynthesizeSpeechRequest.create(properties);
     const response = await GoogleTTSClient.getInstance().synthesizeSpeech(request);
 
-    await this.repository.saveMessageStats(text.length);
+    const msg = this.strip(ssml);
+    logger.info(msg);
+    await this.repository.saveMessageStats(msg.length);
 
     const writeFile = util.promisify(fs.writeFile);
     const audio = response[0];
@@ -45,4 +47,6 @@ export class Synthesizer {
       await writeFile(outputPath, audio.audioContent, 'binary');
     }
   }
+
+  private strip = (ssml: string): string => ssml.replace(/(<([^>]+)>)/gi, '');
 }

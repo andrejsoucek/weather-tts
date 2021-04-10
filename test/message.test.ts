@@ -22,8 +22,12 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr klid. Dráha v používání 0 9 . '
-        + 'Okruhy pravé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('<speak>Milovice Rádio dobrý den. '
+        + 'Čas <say-as interpret-as="time" format="hm24Z">12:00 UTC</say-as>. '
+        + 'Vítr klid. Dráha v používání <say-as interpret-as="characters">09</say-as>. '
+        + 'Okruhy pravé. Teplota <say-as interpret-as="cardinal">20</say-as>'
+        + ' stupňů. Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
   it('runway 27, left circuits, wind no gusts in kts', () => {
     const msg = Message.createFrom(<Weather>{
@@ -37,8 +41,13 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 2 2 0 stupňů 5 uzlů . '
-        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('<speak>Milovice Rádio dobrý den. '
+        + 'Čas <say-as interpret-as="time" format="hm24Z">12:00 UTC</say-as>. '
+        + 'Vítr <say-as interpret-as="characters">220</say-as> stupňů <say-as interpret-as="characters">5</say-as> uzlů. '
+        + 'Dráha v používání <say-as interpret-as="characters">27</say-as>. Okruhy levé. '
+        + 'Teplota <say-as interpret-as="cardinal">20</say-as> stupňů. '
+        + 'Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
   it('runway 27, left circuits, wind with gusts in kts', () => {
     const msg = Message.createFrom(<Weather>{
@@ -52,8 +61,14 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 2 2 0 stupňů 1 8 uzlů. Náraz 2 8 . '
-        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('<speak>Milovice Rádio dobrý den. '
+        + 'Čas <say-as interpret-as="time" format="hm24Z">12:00 UTC</say-as>. '
+        + 'Vítr <say-as interpret-as="characters">220</say-as> stupňů <say-as interpret-as="characters">18</say-as> uzlů. '
+        + 'Náraz <say-as interpret-as="characters">28</say-as>. '
+        + 'Dráha v používání <say-as interpret-as="characters">27</say-as>. Okruhy levé. '
+        + 'Teplota <say-as interpret-as="cardinal">20</say-as> stupňů. '
+        + 'Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
   it('prague timezone winter time', () => {
     const msg = Message.createFrom(<Weather>{
@@ -67,8 +82,13 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 13 00 UTC. Vítr 2 2 0 stupňů 5 uzlů. Náraz 9 . '
-        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal(''
+        + '<speak>Milovice Rádio dobrý den. Čas <say-as interpret-as="time" format="hm24Z">13:00 UTC</say-as>. '
+        + 'Vítr <say-as interpret-as="characters">220</say-as> stupňů <say-as interpret-as="characters">5</say-as> uzlů. '
+        + 'Náraz <say-as interpret-as="characters">9</say-as>. Dráha v používání <say-as interpret-as="characters">27</say-as>. '
+        + 'Okruhy levé. Teplota <say-as interpret-as="cardinal">20</say-as> stupňů. '
+        + 'Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
   it('prague timezone summer time', () => {
     const msg = Message.createFrom(<Weather>{
@@ -82,8 +102,12 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 12 00 UTC. Vítr 2 2 0 stupňů 5 uzlů. Náraz 9 . '
-        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('<speak>Milovice Rádio dobrý den. Čas <say-as interpret-as="time" format="hm24Z">12:00 UTC</say-as>. '
+        + 'Vítr <say-as interpret-as="characters">220</say-as> stupňů <say-as interpret-as="characters">5</say-as> uzlů. '
+        + 'Náraz <say-as interpret-as="characters">9</say-as>. Dráha v používání <say-as interpret-as="characters">27</say-as>. '
+        + 'Okruhy levé. Teplota <say-as interpret-as="cardinal">20</say-as> stupňů. '
+        + 'Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
   it('no timezone shift', () => {
     cfg.message.timezone = 'UTC';
@@ -98,7 +122,11 @@ describe('Message', () => {
       cloudbasevalue: '3000',
       press: '1020',
     }, cfg.message);
-    expect(msg).to.equal('Milovice Rádio dobrý den. Čas 14 00 UTC. Vítr 2 2 0 stupňů 5 uzlů. Náraz 9 . '
-        + 'Dráha v používání 2 7 . Okruhy levé. Teplota 20 stupňů. Základna oblačnosti 3000 stop. QNH 1 0 2 0.');
+    expect(msg).to.equal('<speak>Milovice Rádio dobrý den. Čas <say-as interpret-as="time" format="hm24Z">14:00 UTC</say-as>. '
+        + 'Vítr <say-as interpret-as="characters">220</say-as> stupňů <say-as interpret-as="characters">5</say-as> uzlů. '
+        + 'Náraz <say-as interpret-as="characters">9</say-as>. Dráha v používání <say-as interpret-as="characters">27</say-as>. '
+        + 'Okruhy levé. Teplota <say-as interpret-as="cardinal">20</say-as> stupňů. '
+        + 'Základna oblačnosti <say-as interpret-as="cardinal">3000</say-as> stop. '
+        + 'QNH <say-as interpret-as="characters">1020</say-as>.</speak>');
   });
 });

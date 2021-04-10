@@ -17,21 +17,26 @@ export class Message {
     static createFrom(weather: Weather, cfg: MessageConfig): string {
       const { template } = cfg;
 
-      return template
+      const replaced = template
         .replace('<#TIME>', this.formatTime(weather.time, weather.date, cfg.timezone))
         .replace('<#WIND>', this.formatWind(weather.wspeed, weather.wgust, weather.bearing, cfg.wind))
         .replace('<#RWY>', this.formatRwy(weather.bearing, cfg.rwy))
         .replace('<#CIRCUIT>', this.formatCircuit(weather.bearing, cfg.circuits))
         .replace('<#TEMP>', this.formatTemperature(weather.temp, cfg.temperature))
         .replace('<#CLOUDBASE>', this.formatCloudbase(weather.cloudbasevalue, cfg.cloudbase))
-        .replace('<#QNH>', this.formatQnh(weather.press));
+        .replace('<#QNH>', this.formatQnh(weather.press))
+        .replace(new RegExp('<#BREAK-NONE>', 'gm'), this.formatBreakNone())
+        .replace(new RegExp('<#BREAK-SHORT>', 'gm'), this.formatBreakShort())
+        .replace(new RegExp('<#BREAK-LONG>', 'gm'), this.formatBreakLong());
+
+      return `<speak>${replaced}</speak>`;
     }
 
     private static formatTime(time: string, date: string, tz: string): string {
       const dateTime = moment(`${date} ${time}`, 'DD/MM/YYYY hh:mm:ss').format('YYYY-MM-DD HH:mm');
       const utcTime = moment.tz(dateTime, tz).tz('UTC');
 
-      return `${utcTime.format('HH mm')} UTC`;
+      return `<say-as interpret-as="time" format="hm24Z">${utcTime.format('HH:mm')} UTC</say-as>`;
     }
 
     private static formatWind(
@@ -41,11 +46,13 @@ export class Message {
       if (speedFloat < 2) {
         return cfg.calm;
       }
-      const b = `${bearing.split('').join(' ')} ${cfg.bearingUnits}`;
-      const s = `${Math.round(parseFloat(speed)).toString().split('').join(' ')} ${cfg.speedUnits}`;
-      const g = parseFloat(gust) - speedFloat > 3 ? `. ${cfg.gust} ${Math.round(parseFloat(gust)).toString().split('').join(' ')}` : '';
+      const b = `<say-as interpret-as="characters">${bearing}</say-as> ${cfg.bearingUnits}`;
+      const s = `<say-as interpret-as="characters">${Math.round(parseFloat(speed))}</say-as> ${cfg.speedUnits}`;
+      const g = parseFloat(gust) - speedFloat > 3
+        ? `. ${cfg.gust} <say-as interpret-as="characters">${Math.round(parseFloat(gust))}</say-as>`
+        : '';
 
-      return `${b} ${s}${g} `;
+      return `${b} ${s}${g}`;
     }
 
     private static formatRwy(bearing: string, cfg: Array<TextCondition>): string {
@@ -54,7 +61,7 @@ export class Message {
         const comparator = c.comparator as Comparators;
         const operation = this.operations.get(comparator);
         if (operation && operation(parseFloat(bearing), c.value)) {
-          return `${c.result.padStart(2, '0').split('').join(' ')} `;
+          return `<say-as interpret-as="characters">${c.result.padStart(2, '0')}</say-as>`;
         }
       }
 
@@ -75,16 +82,26 @@ export class Message {
     }
 
     private static formatTemperature(temperature: string, cfg: UnitsConfig): string {
-      return `${Math.round(parseFloat(temperature)).toString()} ${cfg.units}`;
+      return `<say-as interpret-as="cardinal">${Math.round(parseFloat(temperature))}</say-as> ${cfg.units}`;
     }
 
     private static formatCloudbase(cloudbase: string, cfg: UnitsConfig): string {
-      return `${cloudbase} ${cfg.units}`;
+      return `<say-as interpret-as="cardinal">${cloudbase}</say-as> ${cfg.units}`;
     }
 
     private static formatQnh(pressure: string): string {
-      const string = Math.round(parseFloat(pressure)).toString();
+      return `<say-as interpret-as="characters">${Math.round(parseFloat(pressure))}</say-as>`;
+    }
 
-      return string.split('').join(' ');
+    private static formatBreakNone(): string {
+      return '<break time="50ms"/>';
+    }
+
+    private static formatBreakShort(): string {
+      return '<break time="500ms"/>';
+    }
+
+    private static formatBreakLong(): string {
+      return '<break time="1000ms"/>';
     }
 }
