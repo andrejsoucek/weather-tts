@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { Gpio } from 'onoff';
 import { open, Database } from 'sqlite';
 import sqlite3 from 'sqlite3';
+import express from 'express';
 import { INVERSIFY_TYPES } from './inversify.types';
 import { Config } from './config/Config';
 import { RealtimeParser } from './weather/RealtimeParser';
@@ -25,6 +26,8 @@ import { Repository } from './persistence/Repository';
 import { Player } from './tts/Player';
 import { Synthesizer } from './tts/Synthesizer';
 import { PlaysoundPlayer } from './tts/PlaysoundPlayer';
+import { Emitter } from './website/ws/Emitter';
+import { WeatherEmitter } from './website/ws/WeatherEmitter';
 
 const playsoundPlayer = require('play-sound')({ player: 'mpg123' });
 
@@ -60,6 +63,7 @@ container.bind<Parser>(INVERSIFY_TYPES.Parser).to(RealtimeParser);
 container.bind<WeatherProvider>(INVERSIFY_TYPES.WeatherProvider).to(WeatherProvider);
 
 // WEBSERVER
+container.bind<Express.Application>(INVERSIFY_TYPES.Express).toConstantValue(express());
 container.bind<DashboardController>(INVERSIFY_TYPES.DashboardController).to(DashboardController);
 container.bind<SettingsController>(INVERSIFY_TYPES.SettingsController).to(SettingsController);
 container.bind<StartController>(INVERSIFY_TYPES.StartController).to(StartController);
@@ -73,6 +77,10 @@ container.bind<Array<any>>(INVERSIFY_TYPES.Controllers).toDynamicValue((context:
   context.container.get(INVERSIFY_TYPES.SettingsController),
   context.container.get(INVERSIFY_TYPES.StartController),
   context.container.get(INVERSIFY_TYPES.StopController),
+]);
+container.bind<WeatherEmitter>(INVERSIFY_TYPES.WeatherEmitter).to(WeatherEmitter);
+container.bind<Array<Emitter>>(INVERSIFY_TYPES.WebsocketEmitters).toDynamicValue((context: interfaces.Context) => [
+  context.container.get(INVERSIFY_TYPES.WeatherEmitter),
 ]);
 container.bind<WebServer>(INVERSIFY_TYPES.WebServer).to(WebServer);
 container.bind<Repository>(INVERSIFY_TYPES.Repository).to(Repository);

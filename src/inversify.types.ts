@@ -1,5 +1,6 @@
 const INVERSIFY_TYPES = {
   Application: Symbol.for('Application'),
+  Express: Symbol.for('Express'),
   Config: Symbol.for('Config'),
   DashboardController: Symbol.for('DashboardController'),
   SettingsController: Symbol.for('SettingsController'),
@@ -19,6 +20,8 @@ const INVERSIFY_TYPES = {
   Player: Symbol.for('Player'),
   PlaysoundPlayer: Symbol.for('PlaysoundPlayer'),
   Database: Symbol.for('Database'),
+  WebsocketEmitters: Symbol.for('WebsocketEmitters'),
+  WeatherEmitter: Symbol.for('WeatherEmitter'),
 };
 
 export { INVERSIFY_TYPES };
