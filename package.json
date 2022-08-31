@@ -22,7 +22,7 @@
     "express": "^4.17.1",
     "figlet": "^1.4.0",
     "inversify": "^5.0.1",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "onoff": "^6.0.0",
     "play-sound": "^1.1.3",
     "pug": "^3.0.2",
